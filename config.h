@@ -5,6 +5,10 @@ luvrok's dwm build
 
 patches applied (including some slight changes):
 
+TODO:
+dwm-hide_vacant_tags-6.4.diff ----- hide tags with no windows
+dwm-restartsig-20180523-6.2.diff
+
 */
 
 
@@ -30,6 +34,7 @@ static const char *colors[][3]      = {
   /*               fg         bg         border   */
   [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
   [SchemeSel]  = { selfgcolor, selbgcolor, selbordercolor },
+  [SchemeHid]  = { selbgcolor, normbgcolor, selbgcolor },
 };
 
 /* tagging */
@@ -134,7 +139,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_t,                     setlayout,              { .v = &layouts[0] } },
   { MODKEY,                       XK_f,                     setlayout,              { .v = &layouts[1] } },
   { MODKEY,                       XK_m,                     setlayout,              { .v = &layouts[2] } },
-  { MODKEY,                       XK_space,                 setlayout,              { 0 } },
+  // { MODKEY,                       XK_space,                 setlayout,              { 0 } },
   { MODKEY|ShiftMask,             XK_space,                 togglefloating,         { 0 } },
   { MODKEY,                       XK_0,                     view,                   { .ui = ~0 } },
   { MODKEY|ShiftMask,             XK_0,                     tag,                    { .ui = ~0 } },
