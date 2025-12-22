@@ -1,3 +1,5 @@
+#include <X11/XF86keysym.h>
+
 /*
 luvrok's dwm build
 
@@ -11,9 +13,10 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int refreshrate        = 120;      /* refresh rate (per second) for client move/resize */
 
 static const char *fonts[]          = { "JetBrainsMonoNL NFP:size=12", "Font Awesome 6 Free Solid:size=12" };
-static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";;
+static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
 
 /* default colors used if xrdb is not loaded */
 static char normbgcolor[]           = "#2e3440";
@@ -78,8 +81,7 @@ static const Layout layouts[] = {
 #define TERMINAL  "kitty"
 
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu", NULL };
 
 void spawn_with_lang_switch(const Arg *arg) {
     system("xkb-switch -s us && pkill -RTMIN+1 dwmblocks");  // change language to english
