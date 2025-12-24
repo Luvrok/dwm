@@ -9,6 +9,7 @@ dwm-noborderselflickerfix-2022042627-d93ff48803f0.diff
 dwm-pertag-20200914-61bb8b2.diff
 dwm-statuscmd-20241009-8933ebc.diff
 dwm-togglelayout-6.6.diff
+dwm-togglelayout-6.6-pertag-fix.diff
 
 TODO:
 dwm-hide_vacant_tags-6.4.diff ----- hide tags with no windows
