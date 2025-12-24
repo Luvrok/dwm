@@ -6,6 +6,7 @@ luvrok's dwm build
 patches applied (including some slight changes):
 dwm-awesomebar-20250923-6.6.diff
 dwm-noborderselflickerfix-2022042627-d93ff48803f0.diff
+dwm-pertag-20200914-61bb8b2.diff
 
 TODO:
 dwm-hide_vacant_tags-6.4.diff ----- hide tags with no windows
