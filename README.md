@@ -6,3 +6,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [noborder (dwm-noborderselflickerfix-2022042627-d93ff48803f0.diff)](https://dwm.suckless.org/patches/noborder/)
 * [pertag (dwm-pertag-20200914-61bb8b2.diff)](https://dwm.suckless.org/patches/pertag/)
 * [statuscmd (dwm-statuscmd-20241009-8933ebc.diff)](https://dwm.suckless.org/patches/statuscmd/)
+* [togglelayout (dwm-togglelayout-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.6.diff)
