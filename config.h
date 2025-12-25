@@ -31,12 +31,12 @@ static const char *fonts[]          = { "JetBrainsMonoNL NFP:size=12", "Font Awe
 static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
 
 /* default colors used if xrdb is not loaded */
-static char normbgcolor[]           = "#2e3440";
-static char normbordercolor[]       = "#4c566a";
-static char normfgcolor[]           = "#d8dee9";
-static char selfgcolor[]            = "#eceff4";
-static char selbordercolor[]        = "#a3be8c";
-static char selbgcolor[]            = "#b48ead";
+static char normbgcolor[]           = "#282828";
+static char normbordercolor[]       = "#3c3836";
+static char normfgcolor[]           = "#ebdbb2";
+static char selfgcolor[]            = "#fbf1c7";
+static char selbordercolor[]        = "#d65d0e";
+static char selbgcolor[]            = "#d65d0e";
 
 static const char *colors[][3]      = {
   /*               fg         bg         border   */
