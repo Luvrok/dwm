@@ -11,6 +11,7 @@ dwm-statuscmd-20241009-8933ebc.diff
 dwm-togglelayout-6.6.diff
 dwm-togglelayout-6.6-pertag-fix.diff
 dwm-steam-6.2.diff
+dwm-actualfullscreen-20211013-cb3f58a.diff
 
 TODO:
 dwm-hide_vacant_tags-6.4.diff ----- hide tags with no windows
@@ -132,10 +133,11 @@ static const Key keys[  ] = {
   { MODKEY|Mod1Mask,              XK_c,                     spawn,                  SHCMD("dwm-center-window") },
 
   { MODKEY,                       XK_b,                     togglebar,              { 0 } },
-	{ MODKEY,                       XK_j,                     focusstackvis,          { .i = +1 } },
-	{ MODKEY,                       XK_k,                     focusstackvis,          { .i = -1 } },
-	{ MODKEY|ShiftMask,             XK_j,                     focusstackhid,          { .i = +1 } },
-	{ MODKEY|ShiftMask,             XK_k,                     focusstackhid,          { .i = -1 } },
+  { MODKEY,                       XK_y,                     togglefullscr,          { 0 } },
+  { MODKEY,                       XK_j,                     focusstackvis,          { .i = +1 } },
+  { MODKEY,                       XK_k,                     focusstackvis,          { .i = -1 } },
+  { MODKEY|ShiftMask,             XK_j,                     focusstackhid,          { .i = +1 } },
+  { MODKEY|ShiftMask,             XK_k,                     focusstackhid,          { .i = -1 } },
   { MODKEY,                       XK_i,                     incnmaster,             { .i = +1 } }, /* increase numbers of master windows */
   { MODKEY,                       XK_d,                     incnmaster,             { .i = -1 } }, /* decrease numbers of master windows */
   { MODKEY,                       XK_h,                     setmfact,               { .f = -0.05  } }, /* decrease size of master windows */
@@ -157,9 +159,9 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_period,                focusmon,               { .i = +1 } },
   { MODKEY|ShiftMask,             XK_comma,                 tagmon,                 { .i = -1 } },
   { MODKEY|ShiftMask,             XK_period,                tagmon,                 { .i = +1 } },
-	{ MODKEY,                       XK_s,                     show,                   { 0 } },
-	{ MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
-	{ MODKEY,                       XK_h,                     hide,                   { 0 } },
+  { MODKEY,                       XK_s,                     show,                   { 0 } },
+  { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
+  { MODKEY,                       XK_h,                     hide,                   { 0 } },
 
   TAGKEYS(                        XK_1,                     0)
   TAGKEYS(                        XK_2,                     1)

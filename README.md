@@ -9,3 +9,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [togglelayout (dwm-togglelayout-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.6.diff)
 * [my fix togglelayout compatibility with pertag (dwm-togglelayout-6.6-pertag-fix.diff)](https://github.com/Luvrok/dwm/blob/master/patch/dwm-togglelayout-6.6-pertag-fix.diff)
 * [steam (dwm-steam-6.2.diff)](https://dwm.suckless.org/patches/steam/dwm-steam-6.2.diff)
+* [actualfullscreen (dwm-actualfullscreen-20211013-cb3f58a.diff)](https://dwm.suckless.org/patches/actualfullscreen/)
