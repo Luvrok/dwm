@@ -13,9 +13,6 @@ dwm-togglelayout-6.6-pertag-fix.diff
 dwm-steam-6.2.diff
 dwm-actualfullscreen-20211013-cb3f58a.diff
 dwm-hide_vacant_tags-6.4.diff
-
-TODO:
-dwm-hide_vacant_tags-6.4.diff ----- hide tags with no windows
 dwm-restartsig-20180523-6.2.diff
 
 */
@@ -174,6 +171,7 @@ static const Key keys[  ] = {
   TAGKEYS(                        XK_8,                     7)
   TAGKEYS(                        XK_9,                     8)
 
+  { MODKEY|ControlMask|ShiftMask, XK_q,                     quit,                   { 1 } },
   { MODKEY|ShiftMask,             XK_q,                     quit,                   { 0 } },
 };
 
