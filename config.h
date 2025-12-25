@@ -12,6 +12,7 @@ dwm-togglelayout-6.6.diff
 dwm-togglelayout-6.6-pertag-fix.diff
 dwm-steam-6.2.diff
 dwm-actualfullscreen-20211013-cb3f58a.diff
+dwm-hide_vacant_tags-6.4.diff
 
 TODO:
 dwm-hide_vacant_tags-6.4.diff ----- hide tags with no windows
