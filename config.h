@@ -29,7 +29,7 @@ static const char *fonts[]          = { "JetBrainsMonoNL NFP:size=12", "Font Awe
 static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
 
 /* default colors used if xrdb is not loaded */
-static char normbgcolor[]           = "#282828";
+static char normbgcolor[]           = "#000000";
 static char normbordercolor[]       = "#3c3836";
 static char normfgcolor[]           = "#ebdbb2";
 static char selfgcolor[]            = "#fbf1c7";
@@ -129,6 +129,8 @@ static const Key keys[  ] = {
   { 0,                            XK_Print,                 spawn,                  { .v = screenshotcmd } },
 
   { MODKEY|Mod1Mask,              XK_c,                     spawn,                  SHCMD("dwm-center-window") },
+  { MODKEY,                       XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --left-of DisplayPort-0 --scale 1x1 --mode 2560x1440 --rate 120.00") },
+  { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --off") },
 
   { MODKEY,                       XK_b,                     togglebar,              { 0 } },
   { MODKEY,                       XK_y,                     togglefullscr,          { 0 } },
