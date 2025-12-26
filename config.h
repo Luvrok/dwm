@@ -15,6 +15,11 @@ dwm-actualfullscreen-20211013-cb3f58a.diff
 dwm-hide_vacant_tags-6.4.diff
 dwm-restartsig-20180523-6.2.diff
 dwm-vanitygaps-20200610-f09418b.diff
+dwm-fixmultimon-6.4.diff
+
+TODO (maybe someday):
+https://dwm.suckless.org/patches/swallow/
+https://dwm.suckless.org/patches/preventfocusshift/
 
 */
 
