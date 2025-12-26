@@ -14,6 +14,7 @@ dwm-steam-6.2.diff
 dwm-actualfullscreen-20211013-cb3f58a.diff
 dwm-hide_vacant_tags-6.4.diff
 dwm-restartsig-20180523-6.2.diff
+dwm-vanitygaps-20200610-f09418b.diff
 
 */
 
@@ -21,6 +22,11 @@ dwm-restartsig-20180523-6.2.diff
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int refreshrate        = 120;      /* refresh rate (per second) for client move/resize */
@@ -114,8 +120,8 @@ static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("j4-dmenu-desktop --dmenu='dmenu -i -m 0 -fn \"JetBrainsMonoNL NFP:size=12\" -nb \"#282828\" -nf \"#ebdbb2\" -sb \"#d65d0e\" -sf \"#fbf1c7\"' --term='kitty'") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
-  { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
-  { MODKEY|ShiftMask,             XK_f,                     spawn,                  { .v = firefoxcmd } },
+  { MODKEY,                       XK_t,                     spawn,                  { .v = termcmd } },
+  { MODKEY,                       XK_f,                     spawn,                  { .v = firefoxcmd } },
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
@@ -132,7 +138,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --left-of DisplayPort-0 --scale 1x1 --mode 2560x1440 --rate 120.00") },
   { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --off") },
 
-  { MODKEY,                       XK_b,                     togglebar,              { 0 } },
+  { MODKEY|ShiftMask,             XK_b,                     togglebar,              { 0 } },
   { MODKEY,                       XK_y,                     togglefullscr,          { 0 } },
   { MODKEY,                       XK_j,                     focusstackvis,          { .i = +1 } },
   { MODKEY,                       XK_k,                     focusstackvis,          { .i = -1 } },
@@ -147,8 +153,8 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_Return,                zoom,                   { 0 } },
   { MODKEY,                       XK_Tab,                   view,                   { 0 } },
 
-  { MODKEY,                       XK_t,                     setlayout,              { .v = &layouts[0] } },
-  { MODKEY,                       XK_f,                     setlayout,              { .v = &layouts[1] } },
+  { MODKEY|ShiftMask,             XK_t,                     setlayout,              { .v = &layouts[0] } },
+  { MODKEY|ShiftMask,             XK_f,                     setlayout,              { .v = &layouts[1] } },
   { MODKEY,                       XK_m,                     setlayout,              { .v = &layouts[2] } },
   // { MODKEY,                       XK_space,                 setlayout,              { 0 } },
   { MODKEY|ShiftMask,             XK_space,                 togglefloating,         { 0 } },
@@ -161,7 +167,11 @@ static const Key keys[  ] = {
   { MODKEY|ShiftMask,             XK_period,                tagmon,                 { .i = +1 } },
   { MODKEY,                       XK_s,                     show,                   { 0 } },
   { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
-  { MODKEY,                       XK_h,                     hide,                   { 0 } },
+  { MODKEY|ShiftMask,             XK_h,                     hide,                   { 0 } },
+  // { MODKEY,                       XK_h,                     incrgaps,               { .i = +1 } },
+  // { MODKEY,                       XK_l,                     incrgaps,               { .i = -1 } },
+  // { MODKEY,                       XK_0,                     togglegaps,             { 0 } },
+  // { MODKEY|ShiftMask,             XK_0,                     defaultgaps,            { 0 } },
 
   TAGKEYS(                        XK_1,                     0)
   TAGKEYS(                        XK_2,                     1)

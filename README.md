@@ -12,3 +12,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [actualfullscreen (dwm-actualfullscreen-20211013-cb3f58a.diff)](https://dwm.suckless.org/patches/actualfullscreen/)
 * [hide vacant tags (dwm-hide_vacant_tags-6.4.diff)](https://dwm.suckless.org/patches/hide_vacant_tags/)
 * [restartsig (dwm-restartsig-20180523-6.2.diff)](https://dwm.suckless.org/patches/restartsig/)
+* [vanitygaps (dwm-vanitygaps-20200610-f09418b.diff)](https://dwm.suckless.org/patches/vanitygaps/)
