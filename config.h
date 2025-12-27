@@ -17,12 +17,14 @@ dwm-restartsig-20180523-6.2.diff
 dwm-vanitygaps-20200610-f09418b.diff
 dwm-fixmultimon-6.4.diff
 dwm-focusmaster-return-6.2.diff
+dwm-focusmonmouse-6.2.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
 https://dwm.suckless.org/patches/preventfocusshift/
 https://dwm.suckless.org/patches/focusmonmouse/ // Fixes keyboard focus not following the mouse on multi-monitor setups
 // при перемещении окон между тэгами окна накладываются друг на друга перекрывая например окна на тэге находящиеся в режиме fullscreen
+// при фокусе на втором мониторе j4-dmenu-desktop не открывает меню во активном втором мониторе, открывает в главном.
 
 */
 

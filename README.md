@@ -15,3 +15,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [vanitygaps (dwm-vanitygaps-20200610-f09418b.diff)](https://dwm.suckless.org/patches/vanitygaps/)
 * [fixmultimon (dwm-fixmultimon-6.4.diff)](https://dwm.suckless.org/patches/fixmultimon/)
 * [focusmaster (dwm-focusmaster-return-6.2.diff)](https://dwm.suckless.org/patches/focusmaster/)
+* [focusmonmouse (dwm-focusmonmouse-6.2.diff)](https://dwm.suckless.org/patches/focusmonmouse/)
