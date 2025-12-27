@@ -17,3 +17,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [focusmaster (dwm-focusmaster-return-6.2.diff)](https://dwm.suckless.org/patches/focusmaster/)
 * [focusmonmouse (dwm-focusmonmouse-6.2.diff)](https://dwm.suckless.org/patches/focusmonmouse/)
 * [stacker (dwm-stacker-6.6.diff)](https://dwm.suckless.org/patches/stacker/)
+* [sticky (dwm-sticky-6.5.diff)](https://dwm.suckless.org/patches/sticky/)

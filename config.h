@@ -19,6 +19,7 @@ dwm-fixmultimon-6.4.diff
 dwm-focusmaster-return-6.2.diff
 dwm-focusmonmouse-6.2.diff
 dwm-stacker-6.6.diff
+dwm-sticky-6.5.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -203,6 +204,7 @@ static const Key keys[  ] = {
 
   { MODKEY|ControlMask|ShiftMask, XK_q,                     quit,                   { 1 } },
   { MODKEY|ShiftMask,             XK_BackSpace,             quit,                   { 0 } },
+  { MODKEY,                       XK_s,                     togglesticky,           { 0 } },
 };
 
 /* button definitions */
