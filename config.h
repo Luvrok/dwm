@@ -16,10 +16,13 @@ dwm-hide_vacant_tags-6.4.diff
 dwm-restartsig-20180523-6.2.diff
 dwm-vanitygaps-20200610-f09418b.diff
 dwm-fixmultimon-6.4.diff
+dwm-focusmaster-return-6.2.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
 https://dwm.suckless.org/patches/preventfocusshift/
+https://dwm.suckless.org/patches/focusmonmouse/ // Fixes keyboard focus not following the mouse on multi-monitor setups
+// при перемещении окон между тэгами окна накладываются друг на друга перекрывая например окна на тэге находящиеся в режиме fullscreen
 
 */
 
@@ -125,7 +128,7 @@ static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("j4-dmenu-desktop --dmenu='dmenu -i -m 0 -fn \"JetBrainsMonoNL NFP:size=12\" -nb \"#282828\" -nf \"#ebdbb2\" -sb \"#d65d0e\" -sf \"#fbf1c7\"' --term='kitty'") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
-  { MODKEY,                       XK_t,                     spawn,                  { .v = termcmd } },
+  { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
   { MODKEY,                       XK_f,                     spawn,                  { .v = firefoxcmd } },
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
@@ -153,12 +156,13 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_d,                     incnmaster,             { .i = -1 } }, /* decrease numbers of master windows */
   { MODKEY,                       XK_h,                     setmfact,               { .f = -0.05  } }, /* decrease size of master windows */
   { MODKEY,                       XK_l,                     setmfact,               { .f = +0.05  } }, /* increase size of master windows */
+  { MODKEY|ControlMask,           XK_space,                 focusmaster,            { 0 } },
 
   { MODKEY|ShiftMask,             XK_c,                     killclient,             { 0 } },
   { MODKEY,                       XK_Return,                zoom,                   { 0 } },
   { MODKEY,                       XK_Tab,                   view,                   { 0 } },
 
-  { MODKEY|ShiftMask,             XK_t,                     setlayout,              { .v = &layouts[0] } },
+  { MODKEY,                       XK_t,                     setlayout,              { .v = &layouts[0] } },
   { MODKEY|ShiftMask,             XK_f,                     setlayout,              { .v = &layouts[1] } },
   { MODKEY,                       XK_m,                     setlayout,              { .v = &layouts[2] } },
   // { MODKEY,                       XK_space,                 setlayout,              { 0 } },
