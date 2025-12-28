@@ -20,6 +20,7 @@ dwm-focusmaster-return-6.2.diff
 dwm-focusmonmouse-6.2.diff
 dwm-stacker-6.6.diff
 dwm-sticky-6.5.diff
+dwm-floatrules-20210801-138b405.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -65,18 +66,19 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
-  /* class             instance  title  tags mask   isfloating   monitor */
-  { "feh",             NULL,     NULL,  0,          1,          -1 },
+  /* class             instance  title  tags mask   isfloating   monitor      float x,y,w,h     floatborderpx*/
+  { "feh",             NULL,     NULL,  0,          1,          -1, -1,-1,-1,-1, -1},
 
-  { "firefox",         NULL,     NULL,  0,          0,          -1 },
-  { "obsidian",        NULL,     NULL,  0,          0,          -1 },
-  { "kitty",           NULL,     NULL,  0,          0,          -1 },
+  { "firefox",         NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
+  { "firefox",         NULL,     "Picture-in-Picture", 0, 1,    -1, 1820,1020,720,400, 1 },
+  { "obsidian",        NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
+  { "kitty",           NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
 
-  { "Spotify",         NULL,     NULL,  0,          0,          -1 },
-  { "qBittorrent",     NULL,     NULL,  1 << 8,     0,          -1 },
+  { "Spotify",         NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
+  { "qBittorrent",     NULL,     NULL,  1 << 8,     0,          -1, -1,-1,-1,-1, -1 },
 
-  { "Element",         NULL,     NULL,  1 << 3,     0,          -1 },
-  { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,          -1 },
+  { "Element",         NULL,     NULL,  1 << 3,     0,          -1, -1,-1,-1,-1, -1 },
+  { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,          -1, -1,-1,-1,-1, -1 },
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
