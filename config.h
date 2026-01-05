@@ -51,9 +51,9 @@ static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
 static char normbgcolor[]           = "#000000";
 static char normbordercolor[]       = "#3c3836";
 static char normfgcolor[]           = "#ebdbb2";
-static char selfgcolor[]            = "#fbf1c7";
+static char selfgcolor[]            = "#d65d0e";
 static char selbordercolor[]        = "#d65d0e";
-static char selbgcolor[]            = "#d65d0e";
+static char selbgcolor[]            = "#000000";
 
 static const char *colors[][3]      = {
   /*               fg         bg         border   */
