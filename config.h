@@ -21,6 +21,7 @@ dwm-focusmonmouse-6.2.diff
 dwm-stacker-6.6.diff
 dwm-sticky-6.5.diff
 dwm-floatrules-20210801-138b405.diff
+dwm-xrdb-6.4.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -186,6 +187,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_period,                focusmon,               { .i = +1 } },
   { MODKEY|ShiftMask,             XK_comma,                 tagmon,                 { .i = -1 } },
   { MODKEY|ShiftMask,             XK_period,                tagmon,                 { .i = +1 } },
+  { MODKEY,                       XK_F5,                    xrdb,                   { .v = NULL } },
   { MODKEY,                       XK_s,                     show,                   { 0 } },
   { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
   { MODKEY|ShiftMask,             XK_h,                     hide,                   { 0 } },
