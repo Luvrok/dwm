@@ -11,7 +11,6 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [steam (dwm-steam-6.2.diff)](https://dwm.suckless.org/patches/steam/dwm-steam-6.2.diff)
 * [actualfullscreen (dwm-actualfullscreen-20211013-cb3f58a.diff)](https://dwm.suckless.org/patches/actualfullscreen/)
 * [hide vacant tags (dwm-hide_vacant_tags-6.4.diff)](https://dwm.suckless.org/patches/hide_vacant_tags/)
-* [restartsig (dwm-restartsig-20180523-6.2.diff)](https://dwm.suckless.org/patches/restartsig/)
 * [vanitygaps (dwm-vanitygaps-20200610-f09418b.diff)](https://dwm.suckless.org/patches/vanitygaps/)
 * [fixmultimon (dwm-fixmultimon-6.4.diff)](https://dwm.suckless.org/patches/fixmultimon/)
 * [focusmaster (dwm-focusmaster-return-6.2.diff)](https://dwm.suckless.org/patches/focusmaster/)
@@ -21,4 +20,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [floatrules (dwm-floatrules-20210801-138b405.diff)](https://dwm.suckless.org/patches/floatrules/)
 * [xrdb (dwm-xrdb-6.4.diff)](https://dwm.suckless.org/patches/xrdb/)
 * [destroyfocus (dwm-destroyfocus-20210329-61bb8b2.diff)](https://dwm.suckless.org/patches/destroyfocus/)
-* [Restore after restart (dwm-restoreafterrestart-20220709-d3f93c7.diff)](https://dwm.suckless.org/patches/restoreafterrestart/)
+* [selfrestart (dwm-r1615-selfrestart.diff)](https://dwm.suckless.org/patches/selfrestart/)

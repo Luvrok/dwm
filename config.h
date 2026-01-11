@@ -1,4 +1,5 @@
 #include <X11/XF86keysym.h>
+#include "selfrestart.c"
 
 /*
 luvrok's dwm build
@@ -13,7 +14,6 @@ dwm-togglelayout-6.6-pertag-fix.diff
 dwm-steam-6.2.diff
 dwm-actualfullscreen-20211013-cb3f58a.diff
 dwm-hide_vacant_tags-6.4.diff
-dwm-restartsig-20180523-6.2.diff
 dwm-vanitygaps-20200610-f09418b.diff
 dwm-fixmultimon-6.4.diff
 dwm-focusmaster-return-6.2.diff
@@ -23,18 +23,14 @@ dwm-sticky-6.5.diff
 dwm-floatrules-20210801-138b405.diff
 dwm-xrdb-6.4.diff
 dwm-destroyfocus-20210329-61bb8b2.diff
-dwm-restoreafterrestart-20220709-d3f93c7.diff
+dwm-r1615-selfrestart.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
 https://dwm.suckless.org/patches/preventfocusshift/
-https://dwm.suckless.org/patches/focusmonmouse/ // Fixes keyboard focus not following the mouse on multi-monitor setups
-// при перемещении окон между тэгами окна накладываются друг на друга перекрывая например окна на тэге находящиеся в режиме fullscreen
-// при фокусе на втором мониторе j4-dmenu-desktop не открывает меню во активном втором мониторе, открывает в главном.
+https://dwm.suckless.org/patches/restoreafterrestart/ // findout how it can work with selfrestart or find similiar patch
 
 */
-
-#define SESSION_FILE "/tmp/dwm-session"
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -209,7 +205,7 @@ static const Key keys[  ] = {
   TAGKEYS(                        XK_8,                     7)
   TAGKEYS(                        XK_9,                     8)
 
-  { MODKEY|ControlMask|ShiftMask, XK_q,                     quit,                   { 1 } },
+  { MODKEY|ControlMask|ShiftMask, XK_q,                     self_restart,           { 0 } },
   { MODKEY|ShiftMask,             XK_BackSpace,             quit,                   { 0 } },
   { MODKEY,                       XK_s,                     togglesticky,           { 0 } },
 };
