@@ -2775,8 +2775,10 @@ view(const Arg *arg)
 	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
 		togglebar(NULL);
 
-	focus(NULL);
 	arrange(selmon);
+  // When switching tags, focus the client under the mouse,
+  // since I primarily use the mouse.
+	focus(getclientundermouse());
 }
 
 Client *
