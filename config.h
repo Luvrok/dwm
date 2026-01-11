@@ -23,6 +23,7 @@ dwm-sticky-6.5.diff
 dwm-floatrules-20210801-138b405.diff
 dwm-xrdb-6.4.diff
 dwm-destroyfocus-20210329-61bb8b2.diff
+dwm-restoreafterrestart-20220709-d3f93c7.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -33,6 +34,7 @@ https://dwm.suckless.org/patches/focusmonmouse/ // Fixes keyboard focus not foll
 
 */
 
+#define SESSION_FILE "/tmp/dwm-session"
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */

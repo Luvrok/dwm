@@ -21,3 +21,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [floatrules (dwm-floatrules-20210801-138b405.diff)](https://dwm.suckless.org/patches/floatrules/)
 * [xrdb (dwm-xrdb-6.4.diff)](https://dwm.suckless.org/patches/xrdb/)
 * [destroyfocus (dwm-destroyfocus-20210329-61bb8b2.diff)](https://dwm.suckless.org/patches/destroyfocus/)
+* [Restore after restart (dwm-restoreafterrestart-20220709-d3f93c7.diff)](https://dwm.suckless.org/patches/restoreafterrestart/)
