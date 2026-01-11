@@ -22,6 +22,7 @@ dwm-stacker-6.6.diff
 dwm-sticky-6.5.diff
 dwm-floatrules-20210801-138b405.diff
 dwm-xrdb-6.4.diff
+dwm-destroyfocus-20210329-61bb8b2.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
