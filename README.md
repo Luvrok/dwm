@@ -21,3 +21,4 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [xrdb (dwm-xrdb-6.4.diff)](https://dwm.suckless.org/patches/xrdb/)
 * [destroyfocus (dwm-destroyfocus-20210329-61bb8b2.diff)](https://dwm.suckless.org/patches/destroyfocus/)
 * [selfrestart (dwm-r1615-selfrestart.diff)](https://dwm.suckless.org/patches/selfrestart/)
+* [center (dwm-center-6.2.diff)](https://dwm.suckless.org/patches/center/)

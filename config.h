@@ -24,6 +24,7 @@ dwm-floatrules-20210801-138b405.diff
 dwm-xrdb-6.4.diff
 dwm-destroyfocus-20210329-61bb8b2.diff
 dwm-r1615-selfrestart.diff
+dwm-center-6.2.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -66,19 +67,21 @@ static char *colors[][3]      = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
-  /* class             instance  title  tags mask   isfloating   monitor      float x,y,w,h     floatborderpx*/
-  { "feh",             NULL,     NULL,  0,          1,          -1, -1,-1,-1,-1, -1},
+  /* class             instance  title  tags mask   isfloating   iscentered     monitor      float x,y,w,h     floatborderpx*/
+  { "feh",             NULL,     NULL,  0,          1,           0,             -1,          -1,-1,-1,-1,      -1},
 
-  { "firefox",         NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
-  { "firefox",         NULL,     "Picture-in-Picture", 0, 1,    -1, 1820,1020,720,400, 1 },
-  { "obsidian",        NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
-  { "kitty",           NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
+  { "firefox",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
+  { "firefox",         NULL,     "Picture-in-Picture", 0, 1,     0,             -1,          1820,1020,720,400,-1},
+  { "obsidian",        NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
+  { "kitty",           NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
 
-  { "Spotify",         NULL,     NULL,  0,          0,          -1, -1,-1,-1,-1, -1 },
-  { "qBittorrent",     NULL,     NULL,  1 << 8,     0,          -1, -1,-1,-1,-1, -1 },
+  { "Spotify",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
+  { "qBittorrent",     NULL,     NULL,  1 << 8,     0,           0,             -1,          -1,-1,-1,-1,      -1},
 
-  { "Element",         NULL,     NULL,  1 << 3,     0,          -1, -1,-1,-1,-1, -1 },
-  { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,          -1, -1,-1,-1,-1, -1 },
+  { "Element",         NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1},
+  { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1},
+
+  { "Dragon-drop",     NULL,     NULL,  0,          1,           1,             -1,          -1,-1,-1,-1,      -1},
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
