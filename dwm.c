@@ -2264,8 +2264,8 @@ tag(const Arg *arg)
 {
 	if (selmon->sel && arg->ui & TAGMASK) {
 		selmon->sel->tags = arg->ui & TAGMASK;
-		focus(NULL);
 		arrange(selmon);
+		focus(getclientundermouse());
 	}
 }
 
@@ -2454,9 +2454,9 @@ unmanage(Client *c, int destroyed)
 		XUngrabServer(dpy);
 	}
 	free(c);
-  focus(getclientundermouse());
-	updateclientlist();
 	arrange(m);
+	focus(getclientundermouse());
+	updateclientlist();
 }
 
 void
@@ -2879,6 +2879,9 @@ main(int argc, char *argv[])
 		die("pledge");
 #endif /* __OpenBSD__ */
 	scan();
+	arrange(selmon);
+	Client *c = getclientundermouse();
+	if (c) focus(c);
 	run();
 	cleanup();
 	XCloseDisplay(dpy);
