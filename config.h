@@ -71,7 +71,7 @@ static const Rule rules[] = {
   { "feh",             NULL,     NULL,  0,          1,           0,             -1,          -1,-1,-1,-1,      -1},
 
   { "firefox",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
-  { "firefox",         NULL,     "Picture-in-Picture", 0, 1,     0,             -1,          1820,1020,720,400,-1},
+  { NULL,              NULL,     "Picture-in-Picture", 0, 1,     0,             -1,          1820,1020,720,400,-1},
   { "obsidian",        NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
   { "kitty",           NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1},
 

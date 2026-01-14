@@ -172,8 +172,8 @@ typedef struct {
 	const char *instance;
 	const char *title;
 	unsigned int tags;
-	int iscentered;
 	int isfloating;
+	int iscentered;
 	int monitor;
 	int floatx, floaty, floatw, floath;
 	int floatborderpx;
