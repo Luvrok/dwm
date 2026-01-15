@@ -80,6 +80,7 @@ static const Rule rules[] = {
 
   { "Element",         NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1},
   { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1},
+  { "TelegramDesktop", NULL,     "Просмотр медиа",1 << 3,1,      1,             -1,          -1,-1,-1,-1,      -1},
 
   { "Dragon-drop",     NULL,     NULL,  0,          1,           1,             -1,          -1,-1,-1,-1,      -1},
 };
