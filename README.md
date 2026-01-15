@@ -21,4 +21,17 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [xrdb (dwm-xrdb-6.4.diff)](https://dwm.suckless.org/patches/xrdb/)
 * [destroyfocus (dwm-destroyfocus-20210329-61bb8b2.diff)](https://dwm.suckless.org/patches/destroyfocus/)
 * [selfrestart (dwm-r1615-selfrestart.diff)](https://dwm.suckless.org/patches/selfrestart/)
+modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [center (dwm-center-6.2.diff)](https://dwm.suckless.org/patches/center/)
+
+## also check:
+### prioritize focus under the mouse
+ensures focus follows the mouse when switching tags and after client destruction.
+
+related commits: [1](https://github.com/Luvrok/dwm/commit/4d4688bc3990a05ee86a0e1c45bf136034774e67), [2](https://github.com/Luvrok/dwm/commit/1f664afdd5dde743bb5d2542ff7b33e4eec51ead), [3](https://github.com/Luvrok/dwm/commit/bf7df3f61daa697af5ee54676e1f1ee4cb74b516)
+### self-restart (NixOS)
+updated self-restart implementation for NixOS using a more correct dwm reload approach.
+also adds a keybinding and a helper function to launch a test dwm binary from a predefined path.
+
+related commits:
+[1](https://github.com/Luvrok/dwm/commit/9df57752f7aea890964f24182e5ddcdab0ce2221), [2](https://github.com/Luvrok/dwm/commit/d132d2b82b5f2bbd4ce5a8ebd27281a7a470f3cd)
