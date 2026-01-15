@@ -209,6 +209,7 @@ static const Key keys[  ] = {
   TAGKEYS(                        XK_9,                     8)
 
   { MODKEY|ControlMask|ShiftMask, XK_q,                     self_restart,           { 0 } },
+  { MODKEY|ControlMask|ShiftMask, XK_k,                     self_restart_test,      { 0 } },
   { MODKEY|ShiftMask,             XK_BackSpace,             quit,                   { 0 } },
   { MODKEY,                       XK_s,                     togglesticky,           { 0 } },
 };
