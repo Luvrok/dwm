@@ -144,7 +144,7 @@ static const char *mutevol[] = {"dwm-volume", "mute", NULL};
 
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
-  { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("j4-dmenu-desktop --dmenu='dmenu -i -m 0 -fn \"JetBrainsMonoNL NFP:size=12\" -nb \"#000000\" -nf \"#ebdbb2\" -sb \"#d65d0e\" -sf \"#fbf1c7\"' --term='kitty'") },
+  { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("j4-dmenu-desktop --dmenu='dmenu -i -m 0 -fn \"JetBrainsMonoNL NFP:size=12\" -nb \"#282828\" -nf \"#ebdbb2\" -sb \"#d65d0e\" -sf \"#fbf1c7\"' --term='kitty'") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
   { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
   { MODKEY,                       XK_f,                     spawn,                  { .v = firefoxcmd } },
