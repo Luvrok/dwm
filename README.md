@@ -10,6 +10,7 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [my fix togglelayout compatibility with pertag (dwm-togglelayout-6.6-pertag-fix.diff)](https://github.com/Luvrok/dwm/blob/master/patch/dwm-togglelayout-6.6-pertag-fix.diff)
 * [steam (dwm-steam-6.2.diff)](https://dwm.suckless.org/patches/steam/dwm-steam-6.2.diff)
 * [actualfullscreen (dwm-actualfullscreen-20211013-cb3f58a.diff)](https://dwm.suckless.org/patches/actualfullscreen/)
+* [preventfocusshift (dwm-preventfocusshift-20240831-6.5.diff)](https://dwm.suckless.org/patches/preventfocusshift/)
 * [hide vacant tags (dwm-hide_vacant_tags-6.4.diff)](https://dwm.suckless.org/patches/hide_vacant_tags/)
 * [vanitygaps (dwm-vanitygaps-20200610-f09418b.diff)](https://dwm.suckless.org/patches/vanitygaps/)
 * [fixmultimon (dwm-fixmultimon-6.4.diff)](https://dwm.suckless.org/patches/fixmultimon/)
