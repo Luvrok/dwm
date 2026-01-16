@@ -26,10 +26,12 @@ dwm-destroyfocus-20210329-61bb8b2.diff
 dwm-r1615-selfrestart.diff
 dwm-center-6.2.diff
 dwm-preventfocusshift-20240831-6.5.diff
+dwm-movecenter-6.5.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
-https://dwm.suckless.org/patches/preventfocusshift/
+https://dwm.suckless.org/patches/betterswallow/
+https://dwm.suckless.org/patches/dynamicswallow/
 https://dwm.suckless.org/patches/restoreafterrestart/ // findout how it can work with selfrestart or find similiar patch
 
 */
@@ -148,7 +150,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("j4-dmenu-desktop --dmenu='dmenu -i -m 0 -fn \"JetBrainsMonoNL NFP:size=12\" -nb \"#282828\" -nf \"#ebdbb2\" -sb \"#d65d0e\" -sf \"#fbf1c7\"' --term='kitty'") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
   { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
-  { MODKEY,                       XK_f,                     spawn,                  { .v = firefoxcmd } },
+  { MODKEY|ShiftMask,             XK_f,                     spawn,                  { .v = firefoxcmd } },
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
@@ -191,6 +193,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_period,                focusmon,               { .i = +1 } },
   { MODKEY|ShiftMask,             XK_comma,                 tagmon,                 { .i = -1 } },
   { MODKEY|ShiftMask,             XK_period,                tagmon,                 { .i = +1 } },
+  { MODKEY|ShiftMask,             XK_a,                     movecenter,             { 0 } },
   { MODKEY,                       XK_F5,                    xrdb,                   { .v = NULL } },
   { MODKEY,                       XK_s,                     show,                   { 0 } },
   { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
