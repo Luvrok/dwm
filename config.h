@@ -27,6 +27,7 @@ dwm-r1615-selfrestart.diff
 dwm-center-6.2.diff
 dwm-preventfocusshift-20240831-6.5.diff
 dwm-movecenter-6.5.diff
+dwm-xcursor-20250909-74edc27.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/

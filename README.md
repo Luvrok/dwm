@@ -25,6 +25,7 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [center (dwm-center-6.2.diff)](https://dwm.suckless.org/patches/center/)
 * [movecenter (dwm-movecenter-6.5.diff)](https://dwm.suckless.org/patches/movecenter/)
+* [xcursor (dwm-xcursor-20250909-74edc27.diff)](https://dwm.suckless.org/patches/xcursor/)
 
 ## also check:
 ### prioritize focus under the mouse
