@@ -26,6 +26,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [center (dwm-center-6.2.diff)](https://dwm.suckless.org/patches/center/)
 * [movecenter (dwm-movecenter-6.5.diff)](https://dwm.suckless.org/patches/movecenter/)
 * [xcursor (dwm-xcursor-20250909-74edc27.diff)](https://dwm.suckless.org/patches/xcursor/)
+* [borderrule (dwm-borderrule-20231226-e7f651b.diff)](https://dwm.suckless.org/patches/borderrule/)
 
 ## also check:
 ### prioritize focus under the mouse
