@@ -76,7 +76,8 @@ static const Rule rules[] = {
   { "firefox",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
   { NULL,              NULL,     "Picture-in-Picture", 0, 1,     0,             -1,          1820,1020,720,400,-1,               0 },
   { "obsidian",        NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "kitty",           NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "kitty",           NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               1 },
+  { "dmenu",           NULL,     NULL,  0,          1,           0,             -1,          -1,-1,-1,-1,      -1,               1 },
 
   { "Spotify",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
   { "qBittorrent",     NULL,     NULL,  1 << 8,     0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
@@ -147,7 +148,7 @@ static const char *mutevol[] = {"dwm-volume", "mute", NULL};
 
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
-  { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("j4-dmenu-desktop --dmenu='dmenu -i -m 0 -fn \"JetBrainsMonoNL NFP:size=12\" -nb \"#282828\" -nf \"#ebdbb2\" -sb \"#d65d0e\" -sf \"#fbf1c7\"' --term='kitty'") },
+  { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("dmenu_menu") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
   { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
   { MODKEY|ShiftMask,             XK_f,                     spawn,                  { .v = firefoxcmd } },
