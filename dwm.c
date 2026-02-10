@@ -1550,11 +1550,24 @@ movemouse(const Arg *arg)
 void
 movecenter(const Arg *arg)
 {
-	if (selmon->sel) {
-		selmon->sel->x = selmon->sel->mon->mx + (selmon->sel->mon->mw - WIDTH(selmon->sel)) / 2;
-		selmon->sel->y = selmon->sel->mon->my + (selmon->sel->mon->mh - HEIGHT(selmon->sel)) / 2;
-		arrange(selmon);
-	}
+  Client *c = selmon->sel;
+  if (!c)
+      return;
+
+  if (c->isfullscreen)
+    return;
+
+  if (!c->isfloating) {
+      c->isfloating = 1;
+      arrange(c->mon);
+  }
+
+  resize(c,
+      c->mon->wx + (c->mon->ww - WIDTH(c)) / 2,
+      c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2,
+      c->w, c->h, 1);
+
+  XRaiseWindow(dpy, c->win);
 }
 
 Client *
