@@ -72,23 +72,23 @@ static char *colors[][3]      = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
-  /* class             instance  title  tags mask   isfloating   iscentered     monitor        float x,y,w,h     floatborderpx    border-width */
-  { "firefox",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
-  { NULL,              NULL,     "Picture-in-Picture", 0, 1,     0,             -1,          1820,1020,720,400,-1,               0 },
-  { "obsidian",        NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "kitty",           NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               1 },
-  { "dmenu",           NULL,     NULL,  0,          1,           0,             -1,          -1,-1,-1,-1,      -1,               1 },
+  /* class             instance  title  tags mask   isfloating   iscentered     canfocus monitor        float x,y,w,h     floatborderpx    border-width */
+  { "firefox",         NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
+  { NULL,              NULL,     "Picture-in-Picture", 0, 1,     0,             1, -1,          1820,1020,720,400,-1,               0 },
+  { "obsidian",        NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "kitty",           NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               1 },
+  { "dmenu",           NULL,     NULL,  0,          1,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
 
-  { "Spotify",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "qBittorrent",     NULL,     NULL,  1 << 8,     0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "Spotify",         NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "qBittorrent",     NULL,     NULL,  1 << 8,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
 
-  { "Element",         NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", NULL,     "Просмотр медиа",1 << 3,1,      0,             -1,          -1,-1,-1,-1,      -1,               0 },
+  { "Element",         NULL,     NULL,  1 << 3,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "TelegramDesktop", NULL,     "Просмотр медиа",1 << 3,1,      0,             1, -1,          -1,-1,-1,-1,      -1,               0 },
 
-  { "nixos_menu_log", NULL,      NULL, 0,           1,           0,             -1,          1820,1020,720,400,-1,               0 },
+  { "nixos_menu_log", NULL,      NULL, 0,           1,           0,             0, -1,          1820,1020,720,400,-1,               0 },
 
-  { "Dragon-drop",     NULL,     NULL,  0,          1,           1,             -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "Dragon-drop",     NULL,     NULL,  0,          1,           1,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
