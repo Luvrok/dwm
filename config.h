@@ -72,7 +72,7 @@ static char *colors[][3]      = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
-  /* class             instance  title  tags mask   isfloating   iscentered     monitor      float x,y,w,h     floatborderpx    border-width */
+  /* class             instance  title  tags mask   isfloating   iscentered     monitor        float x,y,w,h     floatborderpx    border-width */
   { "firefox",         NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
   { NULL,              NULL,     "Picture-in-Picture", 0, 1,     0,             -1,          1820,1020,720,400,-1,               0 },
   { "obsidian",        NULL,     NULL,  0,          0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
@@ -85,6 +85,8 @@ static const Rule rules[] = {
   { "Element",         NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
   { "TelegramDesktop", NULL,     NULL,  1 << 3,     0,           0,             -1,          -1,-1,-1,-1,      -1,               -1 },
   { "TelegramDesktop", NULL,     "Просмотр медиа",1 << 3,1,      0,             -1,          -1,-1,-1,-1,      -1,               0 },
+
+  { "nixos_menu_log", NULL,      NULL, 0,           1,           0,             -1,          1820,1020,720,400,-1,               0 },
 
   { "Dragon-drop",     NULL,     NULL,  0,          1,           1,             -1,          -1,-1,-1,-1,      -1,               -1 },
 };
@@ -155,6 +157,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
+  { MODKEY|ShiftMask,             XK_u,                     spawn,                  SHCMD("nixos_menu") },
 
   /* XF86Keys */
   { 0,                            XF86XK_AudioMute,         spawn,                  { .v = mutevol}},
