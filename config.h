@@ -158,6 +158,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
   { MODKEY|ShiftMask,             XK_u,                     spawn,                  SHCMD("nixos_menu") },
+  { MODKEY|ShiftMask,             XK_d,                     spawn,                  SHCMD("audioswitcher") },
 
   /* XF86Keys */
   { 0,                            XF86XK_AudioMute,         spawn,                  { .v = mutevol}},
