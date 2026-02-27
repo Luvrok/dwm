@@ -30,6 +30,7 @@ dwm-movecenter-6.5.diff
 dwm-xcursor-20250909-74edc27.diff
 dwm-borderrule-20231226-e7f651b.diff
 dwm-wintype-rules-6.6.diff - ref. https://lists.suckless.org/hackers/2005/17374.html
+dwm-autostarttags-6.4.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -81,17 +82,14 @@ static const Rule rules[] = {
   { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               1 },
   { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
-
   { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
-
+  { "Throne",          NULL,     NULL,     NULL,  1 << 1,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", WTYPE "UTILITY",     NULL,     NULL,  0,1,         0,             1, -1,          -1,-1,-1,-1,      0,                0 },
+  { "TelegramDesktop", WTYPE "UTILITY",NULL,NULL, 0,          1,           0,             1, -1,          -1,-1,-1,-1,      0,                0 },
   { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
-
   { "nixos_menu_log",  NULL,     NULL,      NULL, 0,          1,           0,             0, -1,          1820,1020,720,400,-1,               0 },
-
   { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
 };
 
@@ -102,9 +100,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
   /* symbol  arrange function */
+  { "", monocle },   // одно окно на весь экран
   { "󰓒", tile },      // тайлинг (основная раскладка по умолчанию)
   { "󰇥", NULL },      // floating (NULL = плавающие окна)
-  { "", monocle },   // одно окно на весь экран
 };
 
 #define MODKEY Mod4Mask
@@ -141,6 +139,10 @@ void spawn_with_lang_switch(const Arg *arg) {
     spawn(arg);                  // start dmenu_run
 }
 
+static const char *firefoxlife[] = { "select-profile-firefox--rofi", "life", NULL};
+static const char *element[] = { "element-desktop", NULL };
+static const char *throne[] = { "Throne", NULL };
+static const char *obsidian[] = { "obsidian", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *firefoxcmd[]  = { "select-profile-firefox--rofi", NULL };
 static const char *screenshotcmd[] = { "flameshot", "gui", NULL };
@@ -151,6 +153,14 @@ static const char *downbrt[] = {"dwm-brightness", "down", NULL};
 static const char *upvol[] = {"dwm-volume", "up", NULL};
 static const char *downvol[] = {"dwm-volume", "down", NULL};
 static const char *mutevol[] = {"dwm-volume", "mute", NULL};
+
+Autostarttag autostarttaglist[] = {
+	{.cmd = firefoxlife, .tags = 0 },
+	{.cmd = throne, .tags = 0 },
+	{.cmd = termcmd, .tags = 1 << 2 },
+	{.cmd = element, .tags = 0 },
+	{.cmd = NULL, .tags = 0 },
+};
 
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
@@ -172,8 +182,8 @@ static const Key keys[  ] = {
   { 0,                            XF86XK_MonBrightnessDown, spawn,                  { .v = downbrt}},
   { 0,                            XK_Print,                 spawn,                  { .v = screenshotcmd } },
 
-  { MODKEY,                       XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --left-of DisplayPort-0 --scale 1x1 --mode 2560x1440 --rate 120.00") },
-  { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --off") },
+  // { MODKEY,                       XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --left-of DisplayPort-0 --scale 1x1 --mode 2560x1440 --rate 120.00") },
+  // { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --off") },
 
   { MODKEY|ShiftMask,             XK_b,                     togglebar,              { 0 } },
   { MODKEY,                       XK_y,                     togglefullscr,          { 0 } },
