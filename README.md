@@ -30,6 +30,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [canfocusrule (dwm-canfocusrule-20200702-f709b19.diff)](https://dwm.suckless.org/patches/canfocusrule/)
 * [wintyperule (dwm-wintype-rules-6.6.diff)](https://lists.suckless.org/hackers/2005/17374.html)
 * [autostarttags (dwm-autostarttags-6.4.diff)](https://dwm.suckless.org/patches/autostarttags/dwm-autostarttags-6.4.diff)
+* [ipc (dwm-ipc-20201106-f04cac6.diff)](https://dwm.suckless.org/patches/ipc/)
 
 ## also check:
 ### prioritize focus under the mouse

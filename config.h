@@ -31,12 +31,15 @@ dwm-xcursor-20250909-74edc27.diff
 dwm-borderrule-20231226-e7f651b.diff
 dwm-wintype-rules-6.6.diff - ref. https://lists.suckless.org/hackers/2005/17374.html
 dwm-autostarttags-6.4.diff
+dwm-ipc-20201106-f04cac6.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
 https://dwm.suckless.org/patches/betterswallow/
 https://dwm.suckless.org/patches/dynamicswallow/
-https://dwm.suckless.org/patches/restoreafterrestart/ // findout how it can work with selfrestart or find similiar patch
+https://dwm.suckless.org/patches/restoreafterrestart/ - find out how it can work with selfrestart or find similiar patch
+https://dwm.suckless.org/patches/ipc/
+patch that can keep aspect ratio during mouse resize for specific windows
 
 */
 
@@ -78,9 +81,9 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const Rule rules[] = {
   /* class             role      instance  title  tags mask   isfloating   iscentered     canfocus monitor        float x,y,w,h     floatborderpx    border-width */
   { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,             1, -1,          1820,1020,720,400,-1,               0 },
+  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,             1, -1,          1820,1020,720,400,-1,               -1 },
   { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               1 },
+  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
   { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,             1, -1,          -1,-1,-1,-1,      -1,               -1 },
@@ -157,7 +160,7 @@ static const char *mutevol[] = {"dwm-volume", "mute", NULL};
 Autostarttag autostarttaglist[] = {
 	{.cmd = firefoxlife, .tags = 0 },
 	{.cmd = throne, .tags = 0 },
-	{.cmd = termcmd, .tags = 1 << 2 },
+	// {.cmd = termcmd, .tags = 1 << 2 },
 	{.cmd = element, .tags = 0 },
 	{.cmd = NULL, .tags = 0 },
 };
@@ -199,9 +202,9 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_Return,                zoom,                   { 0 } },
   { MODKEY,                       XK_Tab,                   view,                   { 0 } },
 
-  { MODKEY,                       XK_t,                     setlayout,              { .v = &layouts[0] } },
+  { MODKEY,                       XK_t,                     setlayout,              { .v = &layouts[1] } },
   // { MODKEY|ShiftMask,             XK_f,                     setlayout,              { .v = &layouts[1] } },
-  { MODKEY,                       XK_m,                     setlayout,              { .v = &layouts[2] } },
+  { MODKEY,                       XK_m,                     setlayout,              { .v = &layouts[0] } },
   // { MODKEY,                       XK_space,                 setlayout,              { 0 } },
   { MODKEY|ShiftMask,             XK_space,                 togglefloating,         { 0 } },
   { MODKEY,                       XK_0,                     view,                   { .ui = ~0 } },
@@ -256,3 +259,22 @@ static const Button buttons[] = {
   { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
   { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
+
+static const char *ipcsockpath = "/tmp/dwm.sock";
+static IPCCommand ipccommands[] = {
+  IPCCOMMAND(  view,                1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  toggleview,          1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  tag,                 1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  toggletag,           1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  tagmon,              1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  focusmon,            1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  focusstack,          1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  zoom,                1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  incnmaster,          1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  killclient,          1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  togglefloating,      1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  setmfact,            1,      {ARG_TYPE_FLOAT}  ),
+  IPCCOMMAND(  setlayoutsafe,       1,      {ARG_TYPE_PTR}    ),
+  IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
+};
+
