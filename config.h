@@ -30,7 +30,6 @@ dwm-movecenter-6.5.diff
 dwm-xcursor-20250909-74edc27.diff
 dwm-borderrule-20231226-e7f651b.diff
 dwm-wintype-rules-6.6.diff - ref. https://lists.suckless.org/hackers/2005/17374.html
-dwm-autostarttags-6.4.diff
 dwm-ipc-20201106-f04cac6.diff
 
 TODO (maybe someday):
@@ -156,14 +155,6 @@ static const char *downbrt[] = {"dwm-brightness", "down", NULL};
 static const char *upvol[] = {"dwm-volume", "up", NULL};
 static const char *downvol[] = {"dwm-volume", "down", NULL};
 static const char *mutevol[] = {"dwm-volume", "mute", NULL};
-
-Autostarttag autostarttaglist[] = {
-	{.cmd = firefoxlife, .tags = 0 },
-	{.cmd = throne, .tags = 0 },
-	// {.cmd = termcmd, .tags = 1 << 2 },
-	{.cmd = element, .tags = 0 },
-	{.cmd = NULL, .tags = 0 },
-};
 
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */

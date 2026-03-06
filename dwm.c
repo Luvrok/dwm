@@ -200,11 +200,6 @@ typedef struct {
   int bw;
 } Rule;
 
-typedef struct {
-	const char **cmd;
-	unsigned int tags;
-} Autostarttag;
-
 /* function declarations */
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
@@ -297,8 +292,6 @@ static void showhide(Client *c);
 static int solitary(Client *c);
 static void sigstatusbar(const Arg *arg);
 static void spawn(const Arg *arg);
-static void autostarttagsspawner(void);
-static void applyautostarttags(Client *c);
 static int stackpos(const Arg *arg); /* patch stacker */
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
@@ -370,9 +363,6 @@ static Display *dpy;
 static Drw *drw;
 static Monitor *mons, *selmon, *lastselmon;
 static Window root, wmcheckwin;
-static unsigned int autostarttags = 0;
-static int autostartcomplete = 0;
-static int autostartcmdscomplete = 0;
 
 /* configuration, allows nested code to access above variables */
 #include "ipc.h"
@@ -1461,11 +1451,7 @@ manage(Window w, XWindowAttributes *wa)
 		c->tags = t->tags;
 	} else {
 		c->mon = selmon;
-		if (autostarttags) {
-			applyautostarttags(c);
-		} else {
-			applyrules(c);
-		}
+		applyrules(c);
 	}
 
 	if (c->x + WIDTH(c) > c->mon->wx + c->mon->ww)
@@ -1926,13 +1912,6 @@ run(void)
 			}
 		}
 	}
-
-	// while (running && !XNextEvent(dpy, &ev)){
-	// 	if (!(autostartcomplete || autostarttags))
-	// 		autostarttagsspawner();
-	// 	if (handler[ev.type])
-	// 		handler[ev.type](&ev); /* call handler */
-	// }
 }
 
 void
@@ -2469,33 +2448,6 @@ tag(const Arg *arg)
 		arrange(selmon);
 		focus(getclientundermouse());
 	}
-}
-
-void
-autostarttagsspawner(void)
-{
-	int i;
-	Arg arg;
-
-	for (i = autostartcmdscomplete; i < LENGTH(autostarttaglist) ; i++){
-		autostartcmdscomplete += 1;
-		autostarttags = autostarttaglist[i].tags;
-		arg.v = autostarttaglist[i].cmd ;
-		spawn(&arg);
-		return;
-	}
-	autostartcomplete = 1;
-	return;
-}
-
-void
-applyautostarttags(Client *c)
-{
-	if (!c)
-		return;
-	c->tags = autostarttags;
-	autostarttags = 0;
-	return;
 }
 
 void
