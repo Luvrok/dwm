@@ -3,7 +3,8 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 
 ## patches applied:
 * [awesomebar (dwm-awesomebar-20250923-6.6.diff )](https://dwm.suckless.org/patches/awesomebar/)
-* [noborder (dwm-noborderselflickerfix-2022042627-d93ff48803f0.diff)](https://dwm.suckless.org/patches/noborder/)
+* [noborderflicker (dwm-noborderflicker-20211227-8657affa2a61.diff)](https://dwm.suckless.org/patches/noborderflicker/)
+* [nobordermonocle (dwm-nobordermonocle-20260112-798c5db.diff)](https://dwm.suckless.org/patches/nobordermonocle/)
 * [pertag (dwm-pertag-20200914-61bb8b2.diff)](https://dwm.suckless.org/patches/pertag/)
 * [statuscmd (dwm-statuscmd-20241009-8933ebc.diff)](https://dwm.suckless.org/patches/statuscmd/)
 * [togglelayout (dwm-togglelayout-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.6.diff)

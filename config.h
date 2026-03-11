@@ -6,7 +6,6 @@ luvrok's dwm build
 
 patches applied (including some slight changes):
 dwm-awesomebar-20250923-6.6.diff
-dwm-noborderselflickerfix-2022042627-d93ff48803f0.diff
 dwm-pertag-20200914-61bb8b2.diff
 dwm-statuscmd-20241009-8933ebc.diff
 dwm-togglelayout-6.6.diff
@@ -30,6 +29,8 @@ dwm-movecenter-6.5.diff
 dwm-xcursor-20250909-74edc27.diff
 dwm-borderrule-20231226-e7f651b.diff
 dwm-wintype-rules-6.6.diff - ref. https://lists.suckless.org/hackers/2005/17374.html
+dwm-noborderflicker-20211227-8657affa2a61.diff
+dwm-nobordermonocle-20260112-798c5db.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -105,7 +106,6 @@ static const Layout layouts[] = {
   { "󰓒", tile },      // тайлинг (основная раскладка по умолчанию)
   { "", monocle },   // одно окно на весь экран
   { "󰇥", NULL },      // floating (NULL = плавающие окна)
-  { "", monocle },   // одно окно на весь экран
 };
 
 #define MODKEY Mod4Mask
