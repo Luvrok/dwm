@@ -33,6 +33,7 @@ dwm-ipc-20201106-f04cac6.diff
 dwm-noborderflicker-20211227-8657affa2a61.diff
 dwm-nobordermonocle-20260112-798c5db.diff
 dwm-fixborders-6.2.diff
+dwm-taglayouts-6.4.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -76,6 +77,7 @@ static char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const int taglayouts[] = { 1, 0, 0, 1, 0, 0, 0, 0, 0 };
 
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
