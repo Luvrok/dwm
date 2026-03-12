@@ -30,7 +30,8 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [borderrule (dwm-borderrule-20231226-e7f651b.diff)](https://dwm.suckless.org/patches/borderrule/)
 * [canfocusrule (dwm-canfocusrule-20200702-f709b19.diff)](https://dwm.suckless.org/patches/canfocusrule/)
 * [wintyperule (dwm-wintype-rules-6.6.diff)](https://lists.suckless.org/hackers/2005/17374.html)
-* [alpha (dwm-fixborders-6.2.diff)](https://dwm.suckless.org/patches/alpha/dwm-fixborders-6.2.diff)
+* [alpha (dwm-fixborders-6.2.diff)](https://dwm.suckless.org/patches/alpha/dwm-fixborders-6.2.diffi)
+* [taglayouts (dwm-taglayouts-6.4.diff)](https://dwm.suckless.org/patches/taglayouts/)
 
 ## also check:
 ### prioritize focus under the mouse
