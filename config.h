@@ -95,7 +95,7 @@ static const Rule rules[] = {
   { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
   { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
   { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,             1,        -1,          -1,-1,-1,-1,       0,                0 },
-  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,             1,        -1,          1826,34,727,846,  -1,               -1 },
 
   { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,             0,        -1,          1820,1020,720,400,-1,                0 },
 
