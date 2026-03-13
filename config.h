@@ -79,24 +79,24 @@ static const int taglayouts[] = { 1, 0, 0, 1, 0, 0, 0, 0, 0 };
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
 static const Rule rules[] = {
-  /* class             role      instance  title  tags mask   isfloating   iscentered     canfocus  monitor      float x,y,w,h    floatborderpx     border-width */
-  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,             1,        -1,          1820,1020,720,400,-1,                0 },
-  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
+  /* class             role      instance  title  tags mask   isfloating   iscentered     monitor      float x,y,w,h    floatborderpx     border-width */
+  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,            -1,          1820,1020,720,400,-1,                0 },
+  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
 
-  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
 
-  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,             1,        -1,          -1,-1,-1,-1,       0,                0 },
-  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,             1,        -1,          1826,34,727,846,  -1,               -1 },
+  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,            -1,          -1,-1,-1,-1,       0,                0 },
+  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,            -1,          1826,34,727,846,  -1,               -1 },
 
-  { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,             0,        -1,          1820,1020,720,400,-1,                0 },
+  { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,            -1,          1820,1020,720,400,-1,                0 },
 
-  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,             1,        -1,          -1,-1,-1,-1,      -1,               -1 },
+  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,            -1,          -1,-1,-1,-1,      -1,               -1 },
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
