@@ -127,7 +127,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-	int isfixed, iscentered, isfloating, canfocus, isurgent, neverfocus, oldstate, isfullscreen, issticky;
+	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
 	int floatborderpx;
 	int hasfloatbw;
 	int issteam;
@@ -193,7 +193,6 @@ typedef struct {
 	unsigned int tags;
 	int isfloating;
 	int iscentered;
-	int canfocus;
 	int monitor;
 	int floatx, floaty, floatw, floath;
 	int floatborderpx;
@@ -400,7 +399,6 @@ applyrules(Client *c)
 	/* rule matching */
 	c->iscentered = 0;
 	c->isfloating = 0;
-	// c->canfocus = 1;
 	c->tags = 0;
 	c->bw = borderpx;
 	XGetClassHint(dpy, c->win, &ch);
@@ -420,7 +418,6 @@ applyrules(Client *c)
 		{
 			c->iscentered = r->iscentered;
 			c->isfloating = r->isfloating;
-			// c->canfocus = r->canfocus;
 			c->tags |= r->tags;
 			if (r->bw != -1)
 				c->bw = r->bw;
@@ -1062,8 +1059,6 @@ focus(Client *c)
 		}
 	}
 	if (c) {
-		// if (!c->canfocus)
-			// return;
 		if (c->mon != selmon)
 			selmon = c->mon;
 		if (c->isurgent)
@@ -1506,26 +1501,6 @@ manage(Window w, XWindowAttributes *wa)
 	if (!HIDDEN(c))
 		XMapWindow(dpy, c->win);
 	focus(NULL);
-
-  // dont focus if i open window with canfocus=0 rule (canfocusrule patch)
-  // veracrypt and some windows feels weird
-  // Client *oldsel = c->mon->sel;
-  //
-  // if (c->mon == selmon && c->canfocus)
-  //     unfocus(selmon->sel, 0);
-  //
-  // if (c->canfocus)
-  //     c->mon->sel = c;
-  // else
-  //     c->mon->sel = oldsel;
-  //
-  // arrange(c->mon);
-  // if (!HIDDEN(c))
-  //     XMapWindow(dpy, c->win);
-  // if (c->canfocus)
-  //     focus(NULL);
-  // else
-  //     focus(oldsel);
 }
 
 void
