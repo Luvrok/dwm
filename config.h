@@ -270,6 +270,7 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  togglefloating,      1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  setmfact,            1,      {ARG_TYPE_FLOAT}  ),
   IPCCOMMAND(  setlayoutsafe,       1,      {ARG_TYPE_PTR}    ),
-  IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
+  IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  floatpos,            1,      {ARG_TYPE_STR}    )
 };
 

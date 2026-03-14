@@ -1306,6 +1306,9 @@ getfloatpos(int pos, char pCh, int size, char sCh, int min_p, int max_s, int cp,
 		break;
 	}
 
+	if ((pCh == 'X' || pCh == 'Y') && pos < 0)
+		cp = min_p + max_s + pos - cs;
+
 	if (pCh == '%') // client mid-point position in relation to monitor window area size
 		cp = min_p + max_s * MAX(MIN(pos, 100), 0) / 100 - (cs) / 2;
 	if (pCh == 'm' || pCh == 'M')
