@@ -81,7 +81,7 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const Rule rules[] = {
   /* class             role      instance  title  tags mask   isfloating   iscentered   floatpos   monitor   border-width */
   { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-7X -7Y 720W 400H",      -1,        0 },
+  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-7X -7Y 720W 400H", -1, 0 },
   { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
   { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
   { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,       -1 },
@@ -90,7 +90,7 @@ static const Rule rules[] = {
   { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1 },
   { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1 },
   { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,           NULL,      -1,        0 },
-  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,       -1 },
+  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           "-7X 5Y 720W 900H", -1, 0 },
   { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,        0 },
   { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,       -1 },
 };
