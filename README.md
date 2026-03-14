@@ -29,7 +29,8 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [borderrule (dwm-borderrule-20231226-e7f651b.diff)](https://dwm.suckless.org/patches/borderrule/)
 * [wintyperule (dwm-wintype-rules-6.6.diff)](https://lists.suckless.org/hackers/2005/17374.html)
 * [ipc (dwm-ipc-20201106-f04cac6.diff)](https://dwm.suckless.org/patches/ipc/)
-* [alpha (dwm-fixborders-6.2.diff)](https://dwm.suckless.org/patches/alpha/dwm-fixborders-6.2.diffi)
+* [alpha (dwm-fixborders-6.2.diff)](https://dwm.suckless.org/patches/alpha/)
+* [floatpos (dwm-floatpos-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-floatpos-6.6.diff)
 
 ## also check:
 ### prioritize focus under the mouse
