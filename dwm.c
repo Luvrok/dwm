@@ -1037,8 +1037,13 @@ floatpos(const Arg *arg)
 {
 	Client *c = selmon->sel;
 
-	if (!c || (selmon->lt[selmon->sellt]->arrange && !c->isfloating))
+	if (!c)
 		return;
+
+	if (!c->isfloating) {
+		c->isfloating = 1;
+		arrange(c->mon);
+	}
 
 	setfloatpos(c, (char *)arg->v);
 	resizeclient(c, c->x, c->y, c->w, c->h);
