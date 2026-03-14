@@ -30,7 +30,6 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [wintyperule (dwm-wintype-rules-6.6.diff)](https://lists.suckless.org/hackers/2005/17374.html)
 * [ipc (dwm-ipc-20201106-f04cac6.diff)](https://dwm.suckless.org/patches/ipc/)
 * [alpha (dwm-fixborders-6.2.diff)](https://dwm.suckless.org/patches/alpha/dwm-fixborders-6.2.diffi)
-* [taglayouts (dwm-taglayouts-6.4.diff)](https://dwm.suckless.org/patches/taglayouts/)
 
 ## also check:
 ### prioritize focus under the mouse
