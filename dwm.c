@@ -128,8 +128,6 @@ struct Client {
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
-	int floatborderpx;
-	int hasfloatbw;
 	int issteam;
 	Client *next;
 	Client *snext;
@@ -194,8 +192,6 @@ typedef struct {
 	int isfloating;
 	int iscentered;
 	int monitor;
-	int floatx, floaty, floatw, floath;
-	int floatborderpx;
   int bw;
 } Rule;
 
@@ -421,16 +417,6 @@ applyrules(Client *c)
 			c->tags |= r->tags;
 			if (r->bw != -1)
 				c->bw = r->bw;
-			if (r->floatborderpx >= 0) {
-				c->floatborderpx = r->floatborderpx;
-				c->hasfloatbw = 1;
-			}
-			if (r->isfloating) {
-				if (r->floatx >= 0) c->x = c->mon->mx + r->floatx;
-				if (r->floaty >= 0) c->y = c->mon->my + r->floaty;
-				if (r->floatw >= 0) c->w = r->floatw;
-				if (r->floath >= 0) c->h = r->floath;
-			}
 			for (m = mons; m && m->num != r->monitor; m = m->next);
 			if (m)
 				c->mon = m;
@@ -1758,10 +1744,7 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	c->oldy = c->y; c->y = wc.y = y;
 	c->oldw = c->w; c->w = wc.width = w;
 	c->oldh = c->h; c->h = wc.height = h;
-	if (c->isfloating && c->hasfloatbw && !c->isfullscreen)
-		wc.border_width = c->floatborderpx;
-	else
-		wc.border_width = c->bw;
+	wc.border_width = c->bw;
 	if ((&monocle == c->mon->lt[c->mon->sellt]->arrange) && (!c->isfloating)) {
 		wc.border_width = 0;
 		c->w = wc.width += c->bw * 2;

@@ -19,7 +19,6 @@ dwm-focusmaster-return-6.2.diff
 dwm-focusmonmouse-6.2.diff
 dwm-stacker-6.6.diff
 dwm-sticky-6.5.diff
-dwm-floatrules-20210801-138b405.diff
 dwm-xrdb-6.4.diff
 dwm-destroyfocus-20210329-61bb8b2.diff
 dwm-r1615-selfrestart.diff
@@ -80,24 +79,19 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
 static const Rule rules[] = {
-  /* class             role      instance  title  tags mask   isfloating   iscentered     monitor      float x,y,w,h    floatborderpx     border-width */
-  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,            -1,          1820,1020,720,400,-1,                0 },
-  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-
-  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-
-  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,            -1,          -1,-1,-1,-1,      -1,               -1 },
-  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,            -1,          -1,-1,-1,-1,       0,                0 },
-  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,            -1,          1826,34,727,846,  -1,               -1 },
-
-  { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,            -1,          1820,1020,720,400,-1,                0 },
-
-  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,            -1,          -1,-1,-1,-1,      -1,               -1 },
+  /* class             role      instance  title  tags mask   isfloating   iscentered   monitor   border-width */
+  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,           -1,       -1 },
+  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           -1,        0 },
+  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           -1,       -1 },
+  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           -1,       -1 },
+  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,           -1,       -1 },
+  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,           -1,       -1 },
+  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,           -1,       -1 },
+  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,           -1,       -1 },
+  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,           -1,       -1 },
+  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,           -1,        0 },
+  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           -1,       -1 },
+  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           -1,       -1 },
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
