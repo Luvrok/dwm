@@ -31,6 +31,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [ipc (dwm-ipc-20201106-f04cac6.diff)](https://dwm.suckless.org/patches/ipc/)
 * [alpha (dwm-fixborders-6.2.diff)](https://dwm.suckless.org/patches/alpha/)
 * [floatpos (dwm-floatpos-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-floatpos-6.6.diff)
+* [attachaside (dwm-attachaside-6.6.diff)](https://dwm.suckless.org/patches/attachaside/)
 
 ## also check:
 ### prioritize focus under the mouse
