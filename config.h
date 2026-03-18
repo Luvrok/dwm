@@ -34,6 +34,7 @@ dwm-fixborders-6.2.diff
 dwm-floatpos-6.6.diff
 dwm-attachaside-6.6.diff - Makes new windows attach to the stack area instead of replacing the current master window.
 dwm-betterswallow-6.6.diff
+dwm-renamedscratchpads-6.6.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -73,6 +74,8 @@ static char *colors[][3]      = {
   [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
   [SchemeSel]  = { selfgcolor, selbgcolor, selbordercolor },
   [SchemeHid]  = { selbgcolor, normbgcolor, selbgcolor },
+	[SchemeScratchSel]  = { selfgcolor, selbgcolor, selbordercolor  },
+	[SchemeScratchNorm] = { normfgcolor, normbgcolor, normbordercolor },
 };
 
 /* tagging */
@@ -81,20 +84,21 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
 static const Rule rules[] = {
-  /* class             role      instance  title  tags mask   isfloating   iscentered   floatpos   monitor   border-width */
-  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-12X -12Y 720W 400H", -1, 0 },
-  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
-  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
-  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,       -1 },
-  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1 },
-  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,           NULL,      -1,       -1 },
-  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1 },
-  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1 },
-  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,           NULL,      -1,        0 },
-  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           "-12X 10Y 720W 900H", -1, 0 },
-  { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,        0 },
-  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,       -1 },
+  /* class             role      instance  title  tags mask   isfloating   iscentered   floatpos   monitor   border-width   scratch key */
+  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
+  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-12X -12Y 720W 400H", -1, 0,       0 },
+  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,       -1,            0 },
+  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,           NULL,      -1,       -1,            0 },
+  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
+  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
+  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,           NULL,      -1,        0,            0 },
+  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           "-12X 10Y 720W 900H", -1, 0,        0 },
+  { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,        0,            0 },
+  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,       -1,            0 },
+  { NULL,              NULL,     "spterm", "scratchpad", 0,   1,           1,           NULL,      -1,       -1,            's' },
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
@@ -154,6 +158,9 @@ static const char *upvol[] = {"dwm-volume", "up", NULL};
 static const char *downvol[] = {"dwm-volume", "down", NULL};
 static const char *mutevol[] = {"dwm-volume", "mute", NULL};
 
+/*First arg only serves to match against key in rules, -n is instance*/
+static const char *scratchpadcmd[] = {"s", "st", "-n", "spterm", "-t", "scratchpad", NULL};
+
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("dmenu_menu") },
@@ -166,6 +173,10 @@ static const Key keys[  ] = {
   { MODKEY|ShiftMask,             XK_u,                     spawn,                  SHCMD("nixos_menu") },
   { MODKEY|ShiftMask,             XK_d,                     spawn,                  SHCMD("audioswitcher") },
   { MODKEY|ShiftMask,             XK_p,                     floatpos,               { .v = "-10X -10Y 720W 400H" } },
+
+	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
+	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
+	{ MODKEY|ControlMask,           XK_g,                     setscratch,             { .v = scratchpadcmd } },
 
   /* XF86Keys */
   { 0,                            XF86XK_AudioMute,         spawn,                  { .v = mutevol}},
