@@ -34,6 +34,7 @@ dwm-nobordermonocle-20260112-798c5db.diff
 dwm-fixborders-6.2.diff
 dwm-floatpos-6.6.diff
 dwm-attachaside-6.6.diff - Makes new windows attach to the stack area instead of replacing the current master window.
+dwm-betterswallow-6.6.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/

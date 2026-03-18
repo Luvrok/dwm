@@ -41,6 +41,7 @@
 #include <X11/extensions/Xinerama.h>
 #endif /* XINERAMA */
 #include <X11/Xft/Xft.h>
+#include <X11/extensions/XRes.h>
 #include <X11/Xcursor/Xcursor.h>
 
 #include "drw.h"
@@ -55,7 +56,7 @@
                                * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
 #define ISINC(X)                ((X) > 1000 && (X) < 3000)
 #define ISVISIBLEONTAG(C, T)    (((C)->tags & (T)) || (C)->issticky)
-#define ISVISIBLE(C)            ISVISIBLEONTAG(C, (C)->mon->tagset[(C)->mon->seltags])
+#define ISVISIBLE(C)            ((C)->swallowed == NULL && ISVISIBLEONTAG((C), (C)->mon->tagset[(C)->mon->seltags]))
 #define MOD(N,M)                ((N)%(M) < 0 ? (N)%(M) + (M) : (N)%(M))
 #define HIDDEN(C)               ((getstate(C->win) == IconicState))
 #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
@@ -129,6 +130,11 @@ struct Client {
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
+
+	Client *swallower;
+	Client *swallowed;
+	Client *next_swallowed;
+
 	int ignoresizehints;
 	int issteam;
 	Client *next;
@@ -197,6 +203,12 @@ typedef struct {
 	int monitor;
 	int bw;
 } Rule;
+
+typedef struct SwallowDef {
+	pid_t pid;
+	Client *swallower;
+	struct SwallowDef *next;
+} SwallowDef;
 
 /* function declarations */
 static void applyrules(Client *c);
@@ -356,6 +368,8 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[PropertyNotify] = propertynotify,
 	[UnmapNotify] = unmapnotify
 };
+static Atom swallow_atom;
+static SwallowDef *swallowlist;
 static Atom wmatom[WMLast], netatom[NetLast];
 static int epoll_fd;
 static int dpy_fd;
@@ -537,6 +551,69 @@ arrangemon(Monitor *m)
 	strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, sizeof m->ltsymbol);
 	if (m->lt[m->sellt]->arrange)
 		m->lt[m->sellt]->arrange(m);
+}
+
+pid_t
+wintopid(Window window) {
+  XResClientIdSpec spec;
+  spec.client = window;
+  spec.mask = XRES_CLIENT_ID_XID;
+
+  long count;
+  XResClientIdValue *output;
+  XResQueryClientIds(dpy, 1, &spec, &count, &output);
+
+  pid_t pid = -1;
+
+  for (int i = 0; i < count; ++i)
+    if (output[i].spec.mask == XRES_CLIENT_ID_PID_MASK) {
+      pid = *(pid_t *)output[i].value;
+      break;
+    }
+
+  XResClientIdsDestroy(count, output);
+
+  return pid;
+}
+
+void
+copyclientpos(Client *dst, Client *src) {
+	dst->bw = src->bw;
+	resizeclient(dst, src->x, src->y, src->w, src->h);
+	dst->oldx = src->oldx;
+	dst->oldy = src->oldy;
+	dst->oldw = src->oldw;
+	dst->oldh = src->oldh;
+	dst->oldbw = src->oldbw;
+	dst->oldstate = src->oldstate;
+	dst->isfullscreen = src->isfullscreen;
+	dst->isfloating = src->isfloating;
+	dst->tags = src->tags;
+	dst->mon = src->mon;
+}
+
+void
+checkswallowed(Client *c) {
+	pid_t pid = wintopid(c->win);
+
+	if(pid < 0) return;
+	for(SwallowDef *sd = swallowlist; sd != NULL; sd = sd->next) {
+		if(pid == sd->pid) {
+			c->swallower = sd->swallower;
+			copyclientpos(c, sd->swallower);
+
+			c->next_swallowed = c->swallower->swallowed;
+			c->swallower->swallowed = c;
+
+			c->next = c->swallower->next;
+			c->swallower->next = c;
+
+			c->snext = c->swallower->snext;
+			c->swallower->snext = c;
+
+			return;
+		}
+	}
 }
 
 void
@@ -726,6 +803,13 @@ clientmessage(XEvent *e)
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
 		if (c != selmon->sel && !c->isurgent)
 			seturgent(c, 1);
+	} else if(cme->message_type == swallow_atom) {
+		SwallowDef *node = ecalloc(1, sizeof(SwallowDef));
+		node->pid = cme->data.l[0];
+		node->swallower = c;
+		node->next = swallowlist;
+		swallowlist = node;
+		return;
 	}
 }
 
@@ -955,9 +1039,11 @@ drawbar(Monitor *m)
 	for (c = m->clients; c; c = c->next) {
 		if (ISVISIBLE(c))
 			n++;
-		occ |= c->tags == TAGMASK ? 0 : c->tags;
-		if (c->isurgent)
-			urg |= c->tags;
+		if (!c->swallowed) {
+			occ |= c->tags == TAGMASK ? 0 : c->tags;
+			if (c->isurgent)
+				urg |= c->tags;
+		}
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
@@ -1610,6 +1696,7 @@ manage(Window w, XWindowAttributes *wa)
 		c->y = c->mon->wy + c->mon->wh - HEIGHT(c);
 	c->x = MAX(c->x, c->mon->wx);
 	c->y = MAX(c->y, c->mon->wy);
+	checkswallowed(c);
 
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
@@ -1629,8 +1716,10 @@ manage(Window w, XWindowAttributes *wa)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
-	attachaside(c);
-	attachstack(c);
+	if(!c->swallower) {
+		attachaside(c);
+		attachstack(c);
+	}
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
 		(unsigned char *) &(c->win), 1);
 	XMoveResizeWindow(dpy, c->win, c->x + 2 * sw, c->y, c->w, c->h); /* some windows require this */
@@ -1730,6 +1819,10 @@ movemouse(const Arg *arg)
 		case Expose:
 		case MapRequest:
 			handler[ev.type](&ev);
+
+			// A MapRequest could've caused the current window to swallow another one.
+			if(c->swallowed)
+				c = c->swallowed;
 			break;
 		case MotionNotify:
 			if ((ev.xmotion.time - lasttime) <= (1000 / refreshrate))
@@ -1957,6 +2050,9 @@ resizemouse(const Arg *arg)
 		case Expose:
 		case MapRequest:
 			handler[ev.type](&ev);
+
+			if(c->swallowed)
+				c = c->swallowed;
 			break;
 		case MotionNotify:
 			if ((ev.xmotion.time - lasttime) <= (1000 / refreshrate))
@@ -2418,6 +2514,7 @@ setup(void)
 	netatom[NetWMSticky] = XInternAtom(dpy, "_NET_WM_STATE_STICKY", False);
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
+	swallow_atom = XInternAtom(dpy, "_BETTER_SWALLOW", False);
 	/* init cursors */
 	cursor[CurNormal] = drw_cur_create(drw, "left_ptr");
 	cursor[CurResize] = drw_cur_create(drw, "se-resize");
@@ -2435,6 +2532,8 @@ setup(void)
 		PropModeReplace, (unsigned char *) &wmcheckwin, 1);
 	XChangeProperty(dpy, wmcheckwin, netatom[NetWMName], utf8string, 8,
 		PropModeReplace, (unsigned char *) "dwm", 3);
+	XChangeProperty(dpy, root, swallow_atom, utf8string, 8,
+		PropModeReplace, (unsigned char *) "supported", 9);
 	XChangeProperty(dpy, root, netatom[NetWMCheck], XA_WINDOW, 32,
 		PropModeReplace, (unsigned char *) &wmcheckwin, 1);
 	/* EWMH support per view */
@@ -2790,10 +2889,54 @@ unfocus(Client *c, int setfocus)
 }
 
 void
+deleteswallower(Client *c) {
+	SwallowDef **prevnext = &swallowlist;
+	for(SwallowDef *sd = swallowlist; sd != NULL;) {
+		if(sd->swallower == c) {
+			SwallowDef *next = sd->next;
+			*prevnext = next;
+			free(sd);
+			sd = next;
+		} else {
+			prevnext = &sd->next;
+			sd = sd->next;
+		}
+	}
+
+	Client *sw = c->swallowed;
+	while(sw) {
+		sw->swallower = NULL;
+		Client *next = sw->next_swallowed;
+ 		sw->next_swallowed = NULL;
+		sw = next;
+	}
+}
+
+void
 unmanage(Client *c, int destroyed)
 {
 	Monitor *m = c->mon;
 	XWindowChanges wc;
+
+	if(c->swallower) {
+		Client **prev = &c->swallower->swallowed;
+		for(; *prev != c; prev = &(*prev)->next_swallowed)
+			;
+		*prev = c->next_swallowed;
+		c->next_swallowed = NULL;
+
+		if(c->swallower->swallowed == NULL) {
+			detach(c->swallower);
+			detachstack(c->swallower);
+
+			c->swallower->next = c->next;
+			c->next = c->swallower;
+			c->swallower->snext = c->snext;
+			c->snext = c->swallower;
+
+			copyclientpos(c->swallower, c);
+		}
+	}
 
 	detach(c);
 	detachstack(c);
@@ -2808,12 +2951,13 @@ unmanage(Client *c, int destroyed)
 		XSync(dpy, False);
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
-	}
+	} else deleteswallower(c);
 	if (lastfocused == c)
 		lastfocused = NULL;
 	free(c);
 	arrange(m);
-	focus(getclientundermouse());
+	if(c->swallower) focus(c->swallower);
+	else focus(getclientundermouse());
 	updateclientlist();
 }
 
