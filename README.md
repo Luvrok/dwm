@@ -34,6 +34,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [attachaside (dwm-attachaside-6.6.diff)](https://dwm.suckless.org/patches/attachaside/)
 * [betterswallow (dwm-betterswallow-6.6.diff)](https://dwm.suckless.org/patches/betterswallow/)
 * [bakkeby's renamedscratchpads (dwm-renamedscratchpads-6.6.diff)](https://github.com/bakkeby/patches/blob/13a9e439756be71a85bb94d3e83397424935901e/dwm/dwm-renamedscratchpads-6.6.diff)
+* [ewmhtags (dwm-ewmhtags-6.2.diff)](https://dwm.suckless.org/patches/ewmhtags/)
 
 ## also check:
 ### prioritize focus under the mouse
