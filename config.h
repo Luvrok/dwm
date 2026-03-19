@@ -85,7 +85,7 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
   /* class             role      instance  title  tags mask   isfloating   iscentered   floatpos   monitor   border-width   scratch key */
-  { "firefox",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "librewolf",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
   { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-12X -12Y 720W 400H", -1, 0,       0 },
   { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
   { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
@@ -136,7 +136,7 @@ static const Layout layouts[] = {
 #define GTKCMD(cmd) { .v = (const char*[]){ "/usr/bin/gtk-launch", cmd, NULL } }
 
 #define STATUSBAR "dwmblocks"
-#define BROWSER  "firefox"
+#define BROWSER  "librewolf"
 #define TERMINAL  "kitty"
 
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -148,7 +148,7 @@ void spawn_with_lang_switch(const Arg *arg) {
 }
 
 static const char *termcmd[]  = { "kitty", NULL };
-static const char *firefoxcmd[]  = { "select-profile-firefox--rofi", NULL };
+static const char *librewolfcmd[]  = { "select-profile-librewolf--rofi", NULL };
 static const char *screenshotcmd[] = { "flameshot", "gui", NULL };
 static const char *greenclipcmd[] = { "dwm-greenclip", NULL };
 static const char *lang_pkill[] = { "pkill", "-RTMIN+1", "dwmblocks", NULL};
@@ -166,7 +166,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("dmenu_menu") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
   { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
-  { MODKEY|ShiftMask,             XK_f,                     spawn,                  { .v = firefoxcmd } },
+  { MODKEY|ShiftMask,             XK_f,                     spawn,                  { .v = librewolfcmd } },
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
