@@ -35,6 +35,7 @@ dwm-floatpos-6.6.diff
 dwm-attachaside-6.6.diff - Makes new windows attach to the stack area instead of replacing the current master window.
 dwm-betterswallow-6.6.diff
 dwm-renamedscratchpads-6.6.diff
+dwm-ewmhtags-6.2.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -79,7 +80,7 @@ static char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
