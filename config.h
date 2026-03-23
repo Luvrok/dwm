@@ -87,7 +87,7 @@ static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const Rule rules[] = {
   /* class             role      instance  title  tags mask   isfloating   iscentered   floatpos   monitor   border-width   scratch key */
   { "librewolf",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-12X -12Y 720W 400H", -1, 0,       0 },
+  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-12X -12Y 720W 400H", -1, -1,       0 },
   { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
   { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
   { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,       -1,            0 },
@@ -98,8 +98,8 @@ static const Rule rules[] = {
   { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,           NULL,      -1,        0,            0 },
   { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           "-12X 10Y 720W 900H", -1, 0,        0 },
   { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,        0,            0 },
-  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,       -1,            0 },
-  { NULL,              NULL,     "spterm", "scratchpad", 0,   1,           1,           NULL,      -1,       -1,            's' },
+  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,        -1,            0 },
+  { "st-256color",     NULL,     "spterm", "scratchpad", 0,   1,           1,           "1280W 1200H",-1,     -1,            's' },
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
