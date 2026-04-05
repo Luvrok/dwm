@@ -178,6 +178,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
   { MODKEY,                       XK_r,                     spawn,                  SHCMD("rofi-recording") },
+  { MODKEY|ShiftMask,             XK_r,                     spawn,                  SHCMD("rofi-recording stop") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
   { MODKEY|ControlMask,           XK_k,                     spawn,                  SHCMD("rofi-killer") },
   { MODKEY|ShiftMask,             XK_u,                     spawn,                  SHCMD("nixos_menu") },
