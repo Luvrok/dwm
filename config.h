@@ -99,7 +99,7 @@ static const Rule rules[] = {
   { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           "-12X 10Y 720W 900H", -1, 0,        0 },
   { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,        0,            0 },
   { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,        -1,           0 },
-  { "st-256color",     NULL,     "spterm", "scratchpad", 0,   1,           1,           "1280W 1200H",-1,     -1,           's' },
+  { "spterm",          NULL,     "spterm", "scratchpad", 0,   1,           1,           "1280W 720H",-1,     -1,           's' },
   { "ffplay",          NULL,     NULL,     "android-webcam", 0, 1,         0,           NULL,      -1,        -1,            0 },
 };
 
@@ -161,7 +161,14 @@ static const char *downvol[] = {"dwm-volume", "down", NULL};
 static const char *mutevol[] = {"dwm-volume", "mute", NULL};
 
 /*First arg only serves to match against key in rules, -n is instance*/
-static const char *scratchpadcmd[] = {"s", "st", "-n", "spterm", "-t", "scratchpad", NULL};
+static const char *scratchpadcmd[] = {
+  "s",
+  "kitty",
+  "--class", "spterm",
+  "--name", "spterm",
+  "--title", "scratchpad",
+  NULL
+};
 
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
