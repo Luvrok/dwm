@@ -199,8 +199,8 @@ static const Key keys[  ] = {
   { 0,                            XF86XK_MonBrightnessDown, spawn,                  { .v = downbrt}},
   { 0,                            XK_Print,                 spawn,                  { .v = screenshotcmd } },
 
-  { MODKEY,                       XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --left-of DisplayPort-0 --scale 1x1 --mode 2560x1440 --rate 120.00") },
-  { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output HDMI-A-1 --off") },
+  { MODKEY,                       XK_F7,                    spawn,                  SHCMD("xrandr --output DisplayPort-0 --left-of DisplayPort-1 --scale 1x1 --mode 2560x1440 --rate 120.00") },
+  { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output DisplayPort-0 --off") },
 
   { MODKEY|ShiftMask,             XK_b,                     togglebar,              { 0 } },
   { MODKEY,                       XK_y,                     togglefullscr,          { 0 } },
