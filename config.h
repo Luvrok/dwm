@@ -150,9 +150,9 @@ void spawn_with_lang_switch(const Arg *arg) {
 }
 
 static const char *termcmd[]  = { "kitty", NULL };
-static const char *librewolfcmd[]  = { "select-profile-librewolf--rofi", NULL };
+static const char *librewolfcmd[]  = { "rofi-librewolf", NULL };
 static const char *screenshotcmd[] = { "flameshot", "gui", NULL };
-static const char *greenclipcmd[] = { "dwm-greenclip", NULL };
+static const char *greenclipcmd[] = { "rofi-greenclip", NULL };
 static const char *lang_pkill[] = { "pkill", "-RTMIN+1", "dwmblocks", NULL};
 static const char *upbrt[] = {"dwm-brightness", "up", NULL};
 static const char *downbrt[] = {"dwm-brightness", "down", NULL};
@@ -172,19 +172,19 @@ static const char *scratchpadcmd[] = {
 
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
-  { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("dmenu_menu") },
+  { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("rofi-menu") },
   { MODKEY,                       XK_c,                     spawn,                  { .v = greenclipcmd } },
   { MODKEY|ShiftMask,             XK_t,                     spawn,                  { .v = termcmd } },
   { MODKEY|ShiftMask,             XK_f,                     spawn,                  { .v = librewolfcmd } },
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
-  { MODKEY,                       XK_w,                     spawn,                  SHCMD("dwm-power_menu") },
-  { MODKEY|ShiftMask,             XK_w,                     spawn,                  SHCMD("webcam-start") },
+  { MODKEY,                       XK_w,                     spawn,                  SHCMD("rofi-powermenu") },
+  { MODKEY|ShiftMask,             XK_w,                     spawn,                  SHCMD("webcam") },
   { MODKEY,                       XK_r,                     spawn,                  SHCMD("rofi-recording") },
   { MODKEY|ShiftMask,             XK_r,                     spawn,                  SHCMD("rofi-recording stop") },
   { MODKEY,                       XK_u,                     spawn,                  SHCMD("rofi-pass") },
   { MODKEY|ControlMask,           XK_k,                     spawn,                  SHCMD("rofi-killer") },
   { MODKEY|ShiftMask,             XK_u,                     spawn,                  SHCMD("nixos_menu") },
-  { MODKEY|ShiftMask,             XK_d,                     spawn,                  SHCMD("audioswitcher") },
+  { MODKEY|ShiftMask,             XK_d,                     spawn,                  SHCMD("rofi-audio") },
   { MODKEY|ShiftMask,             XK_p,                     floatpos,               { .v = "-10X -10Y" } },
 
 	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
