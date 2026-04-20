@@ -85,22 +85,23 @@ static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
 static const Rule rules[] = {
-  /* class             role      instance  title  tags mask   isfloating   iscentered   floatpos   monitor   border-width   scratch key */
-  { "librewolf",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
-  { NULL,              NULL,     NULL,     "Picture-in-Picture", 0, 1,     0,           "-12X -12Y 720W 400H", -1, -1,       0 },
-  { "obsidian",        NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
-  { "kitty",           NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
-  { "dmenu",           NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,       -1,            0 },
-  { "Spotify",         NULL,     NULL,     NULL,  0,          0,           0,           NULL,      -1,       -1,            0 },
-  { "qBittorrent",     NULL,     NULL,     NULL,  1 << 8,     0,           0,           NULL,      -1,       -1,            0 },
-  { "Element",         NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
-  { "TelegramDesktop", NULL,     NULL,     NULL,  1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
-  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,        1,           0,           NULL,      -1,        0,            0 },
-  { "Zathura",         NULL,     NULL,     NULL,  0,          1,           0,           "-12X 10Y 720W 900H", -1, 0,        0 },
-  { "nixos_menu_log",  NULL,     NULL,     NULL,  0,          1,           0,           NULL,      -1,        0,            0 },
-  { "Dragon-drop",     NULL,     NULL,     NULL,  0,          1,           1,           NULL,      -1,        -1,           0 },
-  { "spterm",          NULL,     "spterm", "scratchpad", 0,   1,           1,           "1280W 720H",-1,     -1,           's' },
-  { "ffplay",          NULL,     NULL,     "android-webcam", 0, 1,         0,           NULL,      -1,        -1,            0 },
+  /* class             role      instance   title   tags mask   isfloating   iscentered   floatpos   monitor   border-width   scratch key */
+  { "librewolf",       NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
+  { NULL,              NULL,     NULL,      "Picture-in-Picture", 0, 1,      0,           "-12X -12Y 720W 400H", -1, -1,      0 },
+  { "obsidian",        NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "kitty",           NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "dmenu",           NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       -1,            0 },
+  { "Spotify",         NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "qBittorrent",     NULL,     NULL,      NULL,   1 << 8,     0,           0,           NULL,      -1,       -1,            0 },
+  { "Element",         NULL,     NULL,      NULL,   1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
+  { "TelegramDesktop", NULL,     NULL,      NULL,   1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
+  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,          1,           0,           NULL,      -1,       0,             0 },
+  { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,       0 },
+  { "nixos_menu_log",  NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       0,             0 },
+  { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
+  { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 720H",-1,     -1,            's' },
+  { "ffplay",          NULL,     NULL,      "android-webcam", 0, 1,          0,           NULL,      -1,       -1,            0 },
+  { "mpv",             NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       0,             0 }
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
