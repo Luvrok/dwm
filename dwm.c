@@ -2688,12 +2688,21 @@ tagmon(const Arg *arg)
 	Client *c = selmon->sel;
 	if (!c || !mons->next)
 		return;
+
 	if (c->isfullscreen) {
+		int hadfocus = (c == selmon->sel);
+
 		c->isfullscreen = 0;
 		sendmon(c, dirtomon(arg->i));
 		c->isfullscreen = 1;
+
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
 		XRaiseWindow(dpy, c->win);
+
+		if (hadfocus) {
+			focus(c);
+			restack(c->mon);
+		}
 	} else
 		sendmon(c, dirtomon(arg->i));
 }
