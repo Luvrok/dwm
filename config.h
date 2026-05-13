@@ -11,7 +11,6 @@ dwm-statuscmd-20241009-8933ebc.diff
 dwm-togglelayout-6.6.diff
 dwm-togglelayout-6.6-pertag-fix.diff
 dwm-steam-6.2.diff
-dwm-actualfullscreen-20211013-cb3f58a.diff
 dwm-hide_vacant_tags-6.4.diff
 dwm-vanitygaps-20200610-f09418b.diff
 dwm-fixmultimon-6.4.diff
@@ -36,6 +35,10 @@ dwm-attachaside-6.6.diff - Makes new windows attach to the stack area instead of
 dwm-betterswallow-6.6.diff
 dwm-renamedscratchpads-6.6.diff
 dwm-ewmhtags-6.2.diff
+dwm-sendmon_keepfocus-6.6.diff
+dwm-taglayouts-6.4.diff
+dwm-tagmonfixfs-6.6.diff
+dwm-togglefullscreen-6.6.diff
 
 TODO (maybe someday):
 https://dwm.suckless.org/patches/swallow/
@@ -81,21 +84,23 @@ static char *colors[][3]      = {
 
 /* tagging */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const int taglayouts[] = { 1, 1, 0, 0, 0, 0, 0, 0, 1 };
 
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
 
 static const Rule rules[] = {
   /* class             role      instance   title   tags mask   isfloating   iscentered   floatpos   monitor   border-width   scratch key */
-  { "librewolf",       NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
+  { "librewolf",       NULL,     NULL,      NULL,   1 << 0,     0,           0,           NULL,      -1,       -1,            0 },
   { NULL,              NULL,     NULL,      "Picture-in-Picture", 0, 1,      0,           "-12X -12Y 720W 400H", -1, -1,      0 },
   { "obsidian",        NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
   { "kitty",           NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
   { "dmenu",           NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       -1,            0 },
   { "Spotify",         NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       -1,            0 },
   { "qBittorrent",     NULL,     NULL,      NULL,   1 << 8,     0,           0,           NULL,      -1,       -1,            0 },
-  { "Element",         NULL,     NULL,      NULL,   1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
-  { "TelegramDesktop", NULL,     NULL,      NULL,   1 << 3,     0,           0,           NULL,      -1,       -1,            0 },
-  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 0,          1,           0,           NULL,      -1,       0,             0 },
+  { "v2rayN",          NULL,     NULL,      NULL,   1 << 8,     0,           0,           NULL,      -1,       -1,            0 },
+  { "Element",         NULL,     NULL,      NULL,   1 << 0,     0,           0,           NULL,      -1,       -1,            0 },
+  { "TelegramDesktop", NULL,     NULL,      NULL,   1 << 0,     0,           0,           NULL,      -1,       -1,            0 },
+  { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 1 << 0,     1,           0,           NULL,      -1,       0,             0 },
   { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,       0 },
   { "nixos_menu_log",  NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       0,             0 },
   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
@@ -204,7 +209,7 @@ static const Key keys[  ] = {
   { MODKEY|ShiftMask,             XK_F7,                    spawn,                  SHCMD("xrandr --output DisplayPort-0 --off") },
 
   { MODKEY|ShiftMask,             XK_b,                     togglebar,              { 0 } },
-  { MODKEY,                       XK_y,                     togglefullscr,          { 0 } },
+  { MODKEY,                       XK_y,                     togglefullscreen,       { 0 } },
   STACKKEYS(MODKEY,                                         focus)
   STACKKEYS(MODKEY|ShiftMask,                               push)
   { MODKEY,                       XK_i,                     incnmaster,             { .i = +1 } }, /* increase numbers of master windows */

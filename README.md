@@ -10,7 +10,6 @@ inspired by [bread's build](https://github.com/BreadOnPenguins/dwm), [bakkeby's 
 * [togglelayout (dwm-togglelayout-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.6.diff)
 * [my fix togglelayout compatibility with pertag (dwm-togglelayout-6.6-pertag-fix.diff)](https://github.com/Luvrok/dwm/blob/master/patch/dwm-togglelayout-6.6-pertag-fix.diff)
 * [steam (dwm-steam-6.2.diff)](https://dwm.suckless.org/patches/steam/dwm-steam-6.2.diff)
-* [actualfullscreen (dwm-actualfullscreen-20211013-cb3f58a.diff)](https://dwm.suckless.org/patches/actualfullscreen/)
 * [preventfocusshift (dwm-preventfocusshift-20240831-6.5.diff)](https://dwm.suckless.org/patches/preventfocusshift/)
 * [hide vacant tags (dwm-hide_vacant_tags-6.4.diff)](https://dwm.suckless.org/patches/hide_vacant_tags/)
 * [vanitygaps (dwm-vanitygaps-20200610-f09418b.diff)](https://dwm.suckless.org/patches/vanitygaps/)
@@ -34,6 +33,10 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [betterswallow (dwm-betterswallow-6.6.diff)](https://dwm.suckless.org/patches/betterswallow/)
 * [bakkeby's renamedscratchpads (dwm-renamedscratchpads-6.6.diff)](https://github.com/bakkeby/patches/blob/13a9e439756be71a85bb94d3e83397424935901e/dwm/dwm-renamedscratchpads-6.6.diff)
 * [ewmhtags (dwm-ewmhtags-6.2.diff)](https://dwm.suckless.org/patches/ewmhtags/)
+* [sendmon_keepfocus (dwm-sendmon_keepfocus-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-sendmon_keepfocus-6.6.diff)
+* [taglayouts (dwm-taglayouts-6.4.diff)](https://dwm.suckless.org/patches/taglayouts/)
+* [tagmonfixfs (dwm-tagmonfixfs-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-tagmonfixfs-6.6.diff)
+* [togglefullscreen (dwm-togglefullscreen-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglefullscreen-6.6.diff)
 
 ## also check:
 ### prioritize focus under the mouse
