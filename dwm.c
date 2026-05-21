@@ -912,24 +912,29 @@ createmon(void)
 	m->pertag->curtag = m->pertag->prevtag = 1;
 
 	for (i = 0; i <= LENGTH(tags); i++) {
-		m->pertag->nmasters[i] = m->nmaster;
-		m->pertag->mfacts[i] = m->mfact;
+    m->pertag->nmasters[i] = m->nmaster;
+    m->pertag->mfacts[i] = m->mfact;
+    m->pertag->sellts[i] = m->sellt;
+    m->pertag->showbars[i] = m->showbar;
 
-		if (i >= 1) {
-			m->pertag->ltidxs[i][0] = &layouts[taglayouts[i-1]];
-		}
-		else {
-			m->pertag->ltidxs[i][0] = &layouts[0];
-		}
-		m->pertag->ltidxs[i][1] = m->lt[1];
-		m->pertag->sellts[i] = m->sellt;
+    if (i == 0) {
+        m->pertag->ltidxs[i][0] = &layouts[0];
+    } else if (i-1 < LENGTH(taglayouts)) {
+        int idx = taglayouts[i-1];
+        if (idx >= 0 && idx < LENGTH(layouts))
+            m->pertag->ltidxs[i][0] = &layouts[idx];
+        else
+            m->pertag->ltidxs[i][0] = &layouts[0];
+    } else {
+        m->pertag->ltidxs[i][0] = &layouts[0];
+    }
 
-		m->pertag->showbars[i] = m->showbar;
+    m->pertag->ltidxs[i][1] = &layouts[1 % LENGTH(layouts)];
 	}
 
 	m->lt[0] = m->pertag->ltidxs[1][0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
-	strncpy(m->ltsymbol, m->pertag->ltidxs[1][0]->symbol, sizeof m->ltsymbol);
+	strncpy(m->ltsymbol, m->lt[0]->symbol, sizeof m->ltsymbol);
 
 	return m;
 }
@@ -2133,6 +2138,21 @@ sendmon(Client *c, Monitor *m)
 	detach(c);
 	detachstack(c);
 	arrange(c->mon);
+
+	if (c->isfloating && !c->isfullscreen) {
+		c->x = m->wx + (c->x - c->mon->wx);
+		c->y = m->wy + (c->y - c->mon->wy);
+
+		if (c->x + WIDTH(c) > m->wx + m->ww)
+			c->x = m->wx + m->ww - WIDTH(c) - c->bw*2;
+		if (c->y + HEIGHT(c) > m->wy + m->wh)
+			c->y = m->wy + m->wh - HEIGHT(c) - c->bw*2;
+		if (c->x < m->wx)
+			c->x = m->wx;
+		if (c->y < m->wy)
+			c->y = m->wy;
+	}
+
 	c->mon = m;
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	attachaside(c);
@@ -2689,11 +2709,13 @@ tagmon(const Arg *arg)
 	if (!c || !mons->next)
 		return;
 
+	Monitor *m = dirtomon(arg->i);
+
 	if (c->isfullscreen) {
 		int hadfocus = (c == selmon->sel);
 
 		c->isfullscreen = 0;
-		sendmon(c, dirtomon(arg->i));
+		sendmon(c, m);
 		c->isfullscreen = 1;
 
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
@@ -2703,8 +2725,9 @@ tagmon(const Arg *arg)
 			focus(c);
 			restack(c->mon);
 		}
-	} else
-		sendmon(c, dirtomon(arg->i));
+	} else {
+		sendmon(c, m);        // работает и для floating (в т.ч. floatpos), и для tiled
+	}
 }
 
 void
