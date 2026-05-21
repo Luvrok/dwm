@@ -263,7 +263,7 @@ static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
 static int sendevent(Client *c, Atom proto);
-static void sendmon(Client *c, Monitor *m);
+static void sendmon(Client *c, Monitor *m, int fromdrag);
 static void setclientstate(Client *c, long state);
 static void setcurrentdesktop(void);
 static void setdesktopnames(void);
@@ -1822,7 +1822,7 @@ movemouse(const Arg *arg)
 	} while (ev.type != ButtonRelease);
 	XUngrabPointer(dpy, CurrentTime);
 	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
-		sendmon(c, m);
+		sendmon(c, m, 0);
 		selmon = m;
 		focus(NULL);
 	}
@@ -2059,7 +2059,7 @@ resizemouse(const Arg *arg)
 	XUngrabPointer(dpy, CurrentTime);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
-		sendmon(c, m);
+		sendmon(c, m, 1);
 		selmon = m;
 		focus(NULL);
 	}
@@ -2129,35 +2129,35 @@ scan(void)
 }
 
 void
-sendmon(Client *c, Monitor *m)
+sendmon(Client *c, Monitor *m, int fromdrag)
 {
 	if (c->mon == m)
 		return;
+
 	int hadfocus = (c == selmon->sel);
+
 	unfocus(c, 1);
 	detach(c);
 	detachstack(c);
 	arrange(c->mon);
 
-	if (c->isfloating && !c->isfullscreen) {
-		c->x = m->wx + (c->x - c->mon->wx);
-		c->y = m->wy + (c->y - c->mon->wy);
+	Monitor *oldmon = c->mon;
+	c->mon = m;
+	c->tags = m->tagset[m->seltags]; /* singletagset assignment */
 
-		if (c->x + WIDTH(c) > m->wx + m->ww)
-			c->x = m->wx + m->ww - WIDTH(c) - c->bw*2;
-		if (c->y + HEIGHT(c) > m->wy + m->wh)
-			c->y = m->wy + m->wh - HEIGHT(c) - c->bw*2;
-		if (c->x < m->wx)
-			c->x = m->wx;
-		if (c->y < m->wy)
-			c->y = m->wy;
+	if (c->isfloating && !c->isfullscreen && fromdrag == 1) {
+		/* Correct the X coordinate so it's valid for the NEW monitor */
+		c->x = c->x - oldmon->mx + m->mx;
+		c->y = c->y - oldmon->my + m->my;
+
+		/* Bypass boundary checks by setting interact=1 */
+		resize(c, c->x, c->y, c->w, c->h, 1);
 	}
 
-	c->mon = m;
-	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	attachaside(c);
 	attachstack(c);
 	arrange(m);
+
 	if (hadfocus) {
 		focus(c);
 		restack(m);
@@ -2715,7 +2715,7 @@ tagmon(const Arg *arg)
 		int hadfocus = (c == selmon->sel);
 
 		c->isfullscreen = 0;
-		sendmon(c, m);
+		sendmon(c, m, 1);
 		c->isfullscreen = 1;
 
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
@@ -2726,7 +2726,7 @@ tagmon(const Arg *arg)
 			restack(c->mon);
 		}
 	} else {
-		sendmon(c, m);        // работает и для floating (в т.ч. floatpos), и для tiled
+		sendmon(c, m, 1);
 	}
 }
 
