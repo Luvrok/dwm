@@ -170,6 +170,9 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_d,                     incnmaster,             { .i = -1 } }, /* decrease numbers of master windows */
   { MODKEY,                       XK_h,                     setmfact,               { .f = -0.05  } }, /* decrease size of master windows */
   { MODKEY,                       XK_l,                     setmfact,               { .f = +0.05  } }, /* increase size of master windows */
+	{ MODKEY|ShiftMask,             XK_h,                     setcfact,               { .f = +0.25 } },
+	{ MODKEY|ShiftMask,             XK_l,                     setcfact,               { .f = -0.25 } },
+	{ MODKEY|ShiftMask,             XK_o,                     setcfact,               { .f =  0.00 } },
   { MODKEY|ControlMask,           XK_space,                 focusmaster,            { 0 } },
 
   { MODKEY|ShiftMask,             XK_c,                     killclient,             { 0 } },
@@ -190,9 +193,9 @@ static const Key keys[  ] = {
   { MODKEY|ShiftMask,             XK_period,                tagmon,                 { .i = +1 } },
   { MODKEY|ShiftMask,             XK_a,                     movecenter,             { 0 } },
   { MODKEY,                       XK_F5,                    xrdb,                   { .v = NULL } },
-  { MODKEY,                       XK_s,                     show,                   { 0 } },
-  { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
-  { MODKEY|ShiftMask,             XK_h,                     hide,                   { 0 } },
+  // { MODKEY,                       XK_s,                     show,                   { 0 } },
+  // { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
+  // { MODKEY|ShiftMask,             XK_h,                     hide,                   { 0 } },
   // { MODKEY,                       XK_h,                     incrgaps,               { .i = +1 } },
   // { MODKEY,                       XK_l,                     incrgaps,               { .i = -1 } },
   // { MODKEY,                       XK_0,                     togglegaps,             { 0 } },
