@@ -15,7 +15,12 @@ static int floatposgrid_x           = 10;        /* float grid columns */
 static int floatposgrid_y           = 10;        /* float grid rows */
 static const int refreshrate        = 120;      /* refresh rate (per second) for client move/resize */
 
-static const char *fonts[]          = { "JetBrainsMonoNL NFP:size=11", "Font Awesome 6 Free Solid:size=12" };
+static const char *fonts[] = {
+    "JetBrainsMonoNL NFP:size=10",
+    "Sarasa Mono J:size=9",
+    "Noto Sans CJK JP:size=9",
+    "Font Awesome 6 Free Solid:size=8",
+};
 static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
 
 /* default colors used if xrdb is not loaded */
