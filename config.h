@@ -1,53 +1,6 @@
 #include <X11/XF86keysym.h>
 #include "selfrestart.c"
 
-/*
-luvrok's dwm build
-
-patches applied (including some slight changes):
-dwm-awesomebar-20250923-6.6.diff
-dwm-pertag-20200914-61bb8b2.diff
-dwm-statuscmd-20241009-8933ebc.diff
-dwm-togglelayout-6.6.diff
-dwm-togglelayout-6.6-pertag-fix.diff
-dwm-steam-6.2.diff
-dwm-hide_vacant_tags-6.4.diff
-dwm-vanitygaps-20200610-f09418b.diff
-dwm-fixmultimon-6.4.diff
-dwm-focusmaster-return-6.2.diff
-dwm-focusmonmouse-6.2.diff
-dwm-stacker-6.6.diff
-dwm-sticky-6.5.diff
-dwm-xrdb-6.4.diff
-dwm-destroyfocus-20210329-61bb8b2.diff
-dwm-r1615-selfrestart.diff
-dwm-center-6.2.diff
-dwm-preventfocusshift-20240831-6.5.diff
-dwm-movecenter-6.5.diff
-dwm-xcursor-20250909-74edc27.diff
-dwm-borderrule-20231226-e7f651b.diff
-dwm-wintype-rules-6.6.diff - ref. https://lists.suckless.org/hackers/2005/17374.html
-dwm-noborderflicker-20211227-8657affa2a61.diff
-dwm-nobordermonocle-20260112-798c5db.diff
-dwm-fixborders-6.2.diff
-dwm-floatpos-6.6.diff
-dwm-attachaside-6.6.diff - Makes new windows attach to the stack area instead of replacing the current master window.
-dwm-betterswallow-6.6.diff
-dwm-renamedscratchpads-6.6.diff
-dwm-ewmhtags-6.2.diff
-dwm-sendmon_keepfocus-6.6.diff
-dwm-taglayouts-6.4.diff
-dwm-tagmonfixfs-6.6.diff
-dwm-togglefullscreen-6.6.diff
-
-TODO (maybe someday):
-https://dwm.suckless.org/patches/swallow/
-https://dwm.suckless.org/patches/betterswallow/
-https://dwm.suckless.org/patches/dynamicswallow/
-https://dwm.suckless.org/patches/restoreafterrestart/ // findout how it can work with selfrestart or find similiar patch
-
-*/
-
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 0;       /* snap pixel */
@@ -103,6 +56,7 @@ static const Rule rules[] = {
   { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 1 << 0,     1,           0,           NULL,      -1,       0,             0 },
   { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,       0 },
   { "nixos_menu_log",  NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       0,             0 },
+  { "Alpaca",          NULL,     NULL,      NULL,   1 << 3,     0,           0,           NULL,      -1,       0,             0 },
   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
   { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 720H",-1,     -1,            's' },
   { "ffplay",          NULL,     NULL,      "android-webcam", 0, 1,          0,           NULL,      -1,       -1,            0 },

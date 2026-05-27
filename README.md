@@ -37,6 +37,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [taglayouts (dwm-taglayouts-6.4.diff)](https://dwm.suckless.org/patches/taglayouts/)
 * [tagmonfixfs (dwm-tagmonfixfs-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-tagmonfixfs-6.6.diff)
 * [togglefullscreen (dwm-togglefullscreen-6.6.diff)](https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglefullscreen-6.6.diff)
+* [resizehere (dwm-resizehere-20230824-e81f17d.diff)](https://dwm.suckless.org/patches/resizehere/)
 
 ## also check:
 ### prioritize focus under the mouse
