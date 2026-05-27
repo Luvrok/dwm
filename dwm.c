@@ -1041,6 +1041,17 @@ drawbar(Monitor *m)
 		w = TEXTW(tagtext);
  		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tagtext, urg & 1 << i);
+		int isselected = m->tagset[m->seltags] & 1 << i;
+    int isoccupied = occ & 1 << i;
+    int isurgent   = urg & 1 << i;
+    if (isselected || isoccupied) {
+        drw_rect(drw,
+                 x + boxs,
+                 boxs,
+                 boxw, boxw,
+                 isselected,
+                 isurgent);
+    }
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
