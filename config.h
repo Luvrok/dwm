@@ -37,6 +37,7 @@ static char *colors[][3]      = {
 
 /* tagging */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *alttags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
 static const int taglayouts[] = { 1, 1, 0, 0, 0, 0, 0, 0, 1 };
 
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
