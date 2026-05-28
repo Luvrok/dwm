@@ -197,7 +197,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_period,                focusmon,               { .i = +1 } },
   { MODKEY|ShiftMask,             XK_comma,                 tagmon,                 { .i = -1 } },
   { MODKEY|ShiftMask,             XK_period,                tagmon,                 { .i = +1 } },
-  { MODKEY|ShiftMask,             XK_a,                     movecenter,             { 0 } },
+  { MODKEY|ShiftMask,             XK_f,                     movecenter,             { 0 } },
   { MODKEY,                       XK_F5,                    xrdb,                   { .v = NULL } },
   // { MODKEY,                       XK_s,                     show,                   { 0 } },
   // { MODKEY|ShiftMask,             XK_s,                     showall,                { 0 } },
