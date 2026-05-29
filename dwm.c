@@ -252,6 +252,7 @@ static Client *nexttagged(Client *c);
 static void movecenter(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *c);
+static void setscratchprop(Client *c, int on);
 static void propertynotify(XEvent *e);
 static void pushstack(const Arg *arg); /* patch stacker */
 static void quit(const Arg *arg);
@@ -425,6 +426,8 @@ applyrules(Client *c)
 			c->isfloating = r->isfloating;
 			c->tags |= r->tags;
 			c->scratchkey = r->scratchkey;
+			if (c->scratchkey)
+				setscratchprop(c, 1);
 			if (r->bw != -1)
 				c->bw = r->bw;
 			for (m = mons; m && m->num != r->monitor; m = m->next);
@@ -1897,6 +1900,19 @@ pop(Client *c)
 }
 
 void
+setscratchprop(Client *c, int on)
+{
+	Atom prop = XInternAtom(dpy, "_DWM_SCRATCHPAD", False);
+	if (on) {
+		long v = 1;
+		XChangeProperty(dpy, c->win, prop, XA_CARDINAL, 32,
+		                PropModeReplace, (unsigned char *)&v, 1);
+	} else {
+		XDeleteProperty(dpy, c->win, prop);
+	}
+}
+
+void
 propertynotify(XEvent *e)
 {
 	Client *c;
@@ -1990,6 +2006,7 @@ removescratch(const Arg *arg)
 	if (!c)
 		return;
 	c->scratchkey = 0;
+	setscratchprop(selmon->sel, 1);
 }
 
 void
@@ -2491,6 +2508,7 @@ setscratch(const Arg *arg)
 		return;
 
 	c->scratchkey = ((char**)arg->v)[0][0];
+	setscratchprop(selmon->sel, 1);
 }
 
 void
