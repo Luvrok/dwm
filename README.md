@@ -39,6 +39,8 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [resizehere (dwm-resizehere-20230824-e81f17d.diff)](https://dwm.suckless.org/patches/resizehere/)
 * [cfacts (dwm-cfacts-20200913-61bb8b2.diff)](https://dwm.suckless.org/patches/cfacts/)
 * [alttagsdecoration (dwm-alttagsdecoration-2020010304-cb3f58a.diff)](https://dwm.suckless.org/patches/alttagsdecoration/)
+* [windowmap (dwm-windowmap-20221026.diff)](https://dwm.suckless.org/patches/windowmap/)
+* [preserveonrestart (dwm-preserveonrestart-6.3.diff)](https://dwm.suckless.org/patches/preserveonrestart/)
 
 ## also check:
 ### prioritize focus under the mouse

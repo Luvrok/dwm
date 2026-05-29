@@ -60,12 +60,13 @@ static const Rule rules[] = {
   { "Element",         NULL,     NULL,      NULL,   1 << 0,     0,           0,           NULL,      -1,       -1,            0 },
   { "TelegramDesktop", NULL,     NULL,      NULL,   1 << 0,     0,           0,           NULL,      -1,       -1,            0 },
   { "TelegramDesktop", WTYPE "UTILITY", NULL, NULL, 1 << 0,     1,           0,           NULL,      -1,       0,             0 },
-  { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,       0 },
+  { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,      0 },
   { "nixos_menu_log",  NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       0,             0 },
-  { "Alpaca",          NULL,     NULL,      NULL,   1 << 3,     0,           0,           NULL,      -1,       0,             0 },
   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
   { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 720H",-1,     -1,            's' },
-  { "ffplay",          NULL,     NULL,      "android-webcam", 0, 1,          0,           NULL,      -1,       -1,            0 },
+  { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 720H",-1,     -1,            'd' },
+  { "spdwmconf",       NULL,     "spdwmconf",  "dwmconfig", 0,  1,           1,           "1280W 720H",-1,     -1,            'w' },
+  { "ffplay",          NULL,     NULL,      "android-webcam", 0,1,           0,           NULL,      -1,       -1,            0 },
   { "mpv",             NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       0,             0 }
 };
 
@@ -136,6 +137,28 @@ static const char *scratchpadcmd[] = {
   NULL
 };
 
+/* scratchpad: nvim dotfiles */
+static const char *spdotfiles[] = {
+  "d",
+  "kitty",
+  "--class", "spdotfiles",
+  "--name", "spdotfiles",
+  "--title", "dotfiles",
+  "-e", "sh", "-c", "cd ~/HOME/infra/dotfiles && nvim",
+  NULL
+};
+
+/* scratchpad: dwm config.h */
+static const char *spdwmconf[] = {
+  "w",
+  "kitty",
+  "--class", "spdwmconf",
+  "--name", "spdwmconf",
+  "--title", "dwmconfig",
+  "-e", "sh", "-c", "cd ~/HOME/infra/dwm && nvim",
+  NULL
+};
+
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("rofi-menu") },
@@ -156,6 +179,9 @@ static const Key keys[  ] = {
 	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ControlMask,           XK_g,                     setscratch,             { .v = scratchpadcmd } },
+
+  { MODKEY,                       XK_v,                     togglescratch,          { .v = spdotfiles } },
+  { MODKEY,                       XK_e,                     togglescratch,          { .v = spdwmconf } },
 
   /* XF86Keys */
   { 0,                            XF86XK_AudioMute,         spawn,                  { .v = mutevol}},
