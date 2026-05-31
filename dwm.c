@@ -57,7 +57,7 @@
 #define ISVISIBLEONTAG(C, T)    (((C)->tags & (T)) || (C)->issticky)
 #define ISVISIBLE(C)            ((C)->swallowed == NULL && ISVISIBLEONTAG((C), (C)->mon->tagset[(C)->mon->seltags]))
 #define MOD(N,M)                ((N)%(M) < 0 ? (N)%(M) + (M) : (N)%(M))
-#define HIDDEN(C)               ((getstate(C->win) == IconicState))
+#define HIDDEN(C)               ((C)->ishidden)
 #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
@@ -119,6 +119,7 @@ struct Client {
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
+	int ishidden;
 	char scratchkey;
 
 	Client *swallower;
@@ -1565,6 +1566,7 @@ hidewin(Client *c) {
 	XSelectInput(dpy, root, ra.your_event_mask & ~SubstructureNotifyMask);
 	XSelectInput(dpy, w, ca.your_event_mask & ~StructureNotifyMask);
 	XUnmapWindow(dpy, w);
+	c->ishidden = 1;
 	setclientstate(c, IconicState);
 	XSelectInput(dpy, root, ra.your_event_mask);
 	XSelectInput(dpy, w, ca.your_event_mask);
@@ -1743,8 +1745,8 @@ manage(Window w, XWindowAttributes *wa)
 		unfocus(selmon->sel, 0);
 	c->mon->sel = c;
 	arrange(c->mon);
-	if (!HIDDEN(c))
-		XMapWindow(dpy, c->win);
+	if (ISVISIBLE(c) && !HIDDEN(c))
+    XMapWindow(dpy, c->win);
 	focus(NULL);
 }
 
@@ -2673,6 +2675,7 @@ showwin(Client *c)
 	if (!c || !HIDDEN(c))
 		return;
 
+	c->ishidden = 0;
 	XMapWindow(dpy, c->win);
 	setclientstate(c, NormalState);
 	arrange(c->mon);
@@ -2683,17 +2686,15 @@ showhide(Client *c)
 {
 	if (!c)
 		return;
-	if (ISVISIBLE(c)) {
-		/* show clients top down */
-		window_map(dpy, c, 1);
-		showhide(c->snext);
+
+	if (ISVISIBLE(c) && !HIDDEN(c)) {
+    window_map(dpy, c, 1);
+    showhide(c->snext);
 	} else {
-		/* optional: auto-hide scratchpads when moving to other tags */
-		if (c->scratchkey != 0 && !(c->tags & c->mon->tagset[c->mon->seltags]))
-			c->tags = 0;
-		/* hide clients bottom up */
-		showhide(c->snext);
-		window_unmap(dpy, c->win, root, 1);
+			if (c->scratchkey != 0 && !(c->tags & c->mon->tagset[c->mon->seltags]))
+					c->tags = 0;
+			showhide(c->snext);
+			window_unmap(dpy, c->win, root, 1);
 	}
 }
 
