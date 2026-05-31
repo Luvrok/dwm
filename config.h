@@ -17,8 +17,6 @@ static const int refreshrate        = 120;      /* refresh rate (per second) for
 
 static const char *fonts[] = {
     "JetBrainsMonoNL NFP:size=10",
-    "Sarasa Mono J:size=9",
-    "Noto Sans CJK JP:size=9",
     "Font Awesome 6 Free Solid:size=8",
 };
 static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
@@ -42,7 +40,7 @@ static char *colors[][3]      = {
 
 /* tagging */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *alttags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
+static const char *alttags[] = { "scl", "obs", "sh1", "sh2", "smth", "virt", "med", "smth", "vpn" };
 static const int taglayouts[] = { 1, 1, 0, 0, 0, 0, 0, 0, 1 };
 
 #define WTYPE "_NET_WM_WINDOW_TYPE_"
