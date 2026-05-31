@@ -1701,10 +1701,6 @@ manage(Window w, XWindowAttributes *wa)
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
 	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
-	if (getatomprop(c, netatom[NetWMState]) == netatom[NetWMFullscreen])
-		setfullscreen(c, 1);
-	updatesizehints(c);
-	updatewmhints(c);
 	{
 		int format;
 		unsigned long *data, n, extra;
@@ -1723,6 +1719,11 @@ manage(Window w, XWindowAttributes *wa)
 		if (n > 0)
 			XFree(data);
 	}
+
+	if (getatomprop(c, netatom[NetWMState]) == netatom[NetWMFullscreen])
+		setfullscreen(c, 1);
+	updatesizehints(c);
+	updatewmhints(c);
 	setclienttagprop(c);
 
 	if (c->iscentered) {
