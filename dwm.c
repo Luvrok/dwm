@@ -254,6 +254,7 @@ static void movecenter(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *c);
 static void setscratchprop(Client *c, int on);
+static void sethiddenprop(Client *c, int on);
 static void propertynotify(XEvent *e);
 static void pushstack(const Arg *arg); /* patch stacker */
 static void quit(const Arg *arg);
@@ -1558,6 +1559,11 @@ hidewin(Client *c) {
 	Window w = c->win;
 	static XWindowAttributes ra, ca;
 
+	/* Set _DWM_HIDDEN, then flush + wait so picom reads it before we unmap. Otherwise the hide trigger fires first and gets the default animation. */
+	sethiddenprop(c, 1);
+	XFlush(dpy);
+	usleep(20000);
+
 	// more or less taken directly from blackbox's hide() function
 	XGrabServer(dpy);
 	XGetWindowAttributes(dpy, root, &ra);
@@ -1926,6 +1932,20 @@ void
 setscratchprop(Client *c, int on)
 {
 	Atom prop = XInternAtom(dpy, "_DWM_SCRATCHPAD", False);
+	if (on) {
+		long v = 1;
+		XChangeProperty(dpy, c->win, prop, XA_CARDINAL, 32,
+		                PropModeReplace, (unsigned char *)&v, 1);
+	} else {
+		XDeleteProperty(dpy, c->win, prop);
+	}
+}
+
+/* Flag awesomebar-hidden windows so the compositor can animate them separately from tag-switch map/unmap. */
+void
+sethiddenprop(Client *c, int on)
+{
+	Atom prop = XInternAtom(dpy, "_DWM_HIDDEN", False);
 	if (on) {
 		long v = 1;
 		XChangeProperty(dpy, c->win, prop, XA_CARDINAL, 32,
@@ -2677,6 +2697,10 @@ showwin(Client *c)
 
 	c->ishidden = 0;
 	XMapWindow(dpy, c->win);
+	/* Clear _DWM_HIDDEN only after picom has processed the map, else the show trigger sees it gone and uses the default animation. */
+	XFlush(dpy);
+	usleep(20000);
+	sethiddenprop(c, 0);
 	setclientstate(c, NormalState);
 	arrange(c->mon);
 }
