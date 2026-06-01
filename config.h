@@ -157,6 +157,25 @@ static const char *spdwmconf[] = {
   NULL
 };
 
+/* ---- growable scratchpad dock (issue #3) ---------------------------------- */
+/* Windows dock into the scratchpad group identified by this key. It matches the
+   first element of scratchpadcmd ('s'), so dock members show/hide with Mod+G. */
+#define SCRATCHDOCKKEY 's'
+static const int scratchdock_mainw = 1280; /* main window inner width  (matches the spterm rule) */
+static const int scratchdock_mainh = 720;  /* main window inner height (matches the spterm rule) */
+static const int scratchdock_dockw = 480;  /* inner width of the docked (right) column */
+static const int scratchdock_gap   = 10;   /* gap between main and dock, and between docked windows */
+static const char *scratchdockclass = "spdock";  /* class/instance of windows spawned by Scenario 1 */
+static const char scratchdockadoptclass[] = "kitty"; /* Scenario 2 only adopts windows of this class */
+/* Scenario 1 spawns a kitty marked with the dock class so applyrules() catches it. */
+static const char *scratchdocknewcmd[] = {
+  "kitty",
+  "--class", "spdock",
+  "--name", "spdock",
+  "--title", "spdock",
+  NULL
+};
+
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("rofi-menu") },
@@ -177,6 +196,12 @@ static const Key keys[  ] = {
 	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ControlMask,           XK_g,                     setscratch,             { .v = scratchpadcmd } },
+
+	/* growable scratchpad dock (issue #3) */
+	{ MODKEY,                       XK_apostrophe,            scratchdocknew,         { 0 } },        /* Scenario 1: spawn mini window docked right */
+	{ MODKEY|ShiftMask,             XK_apostrophe,            scratchdockadopt,       { 0 } },        /* Scenario 2: adopt selected kitty window */
+	{ MODKEY,                       XK_semicolon,             scratchdockcycle,       { .i = +1 } },  /* cycle focus within scratchpad only */
+	{ MODKEY|ShiftMask,             XK_semicolon,             scratchdockcycle,       { .i = -1 } },
 
   { MODKEY,                       XK_v,                     togglescratch,          { .v = spdotfiles } },
   { MODKEY,                       XK_e,                     togglescratch,          { .v = spdwmconf } },
