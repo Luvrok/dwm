@@ -61,9 +61,10 @@ static const Rule rules[] = {
   { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,      0 },
   { "nixos_menu_log",  NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       0,             0 },
   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
-  { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 720H",-1,     -1,            's' },
-  { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 720H",-1,     -1,            'd' },
-  { "spdwmconf",       NULL,     "spdwmconf",  "dwmconfig", 0,  1,           1,           "1280W 720H",-1,     -1,            'w' },
+  { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 910H",-1,     -1,            's' },
+  { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 910H",-1,     -1,            'd' },
+  { "spdwmconf",       NULL,     "spdwmconf",  "dwmconfig", 0,  1,           1,           "1280W 910H",-1,     -1,            'w' },
+  { "spdock",          NULL,     "spdock",  "spdock", 0,        1,           1,           "1280W 910H",-1,     -1,            0 },
   { "ffplay",          NULL,     NULL,      "android-webcam", 0,1,           0,           NULL,      -1,       -1,            0 },
   { "mpv",             NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       0,             0 }
 };
@@ -157,6 +158,34 @@ static const char *spdwmconf[] = {
   NULL
 };
 
+/* ---- scratchpad dock ------------------------------------------------------
+   Each scratchkey ('s','d','w',...) is a group: 1 main + 1 dock to its right. */
+#define SCRATCHDOCKKEY 's'                   /* default group */
+static const int scratchdock_mainw = 1280;   /* main width  */
+static const int scratchdock_mainh = 910;    /* main height */
+static const int scratchdock_dockw = 480;    /* dock width */
+static const int scratchdock_gap   = 10;     /* main<->dock gap */
+static const int scratchdock_single = 1;     /* 1: one dock per group */
+static const int scratchdock_exclusive = 1;  /* 1: only one group visible */
+static const char *scratchdockclass = "spdock";      /* class of Mod+' windows */
+static const char scratchdockadoptclass[] = "kitty"; /* default adoptable class */
+static const char *scratchdocknewcmd[] = {
+  "kitty",
+  "--class", "spdock",
+  "--name", "spdock",
+  "--title", "spdock",
+  NULL
+};
+
+/* Which WM_CLASS each group accepts (main and dock). A group not listed here
+   defaults to scratchdockadoptclass ("kitty"). Use NULL to allow ANY class. */
+static const ScratchAllow scratchallow[] = {
+  /* key   allowclass (NULL = any) */
+  { 's',   "kitty" },
+  { 'd',   "kitty" },
+  { 'w',   NULL },
+};
+
 static const Key keys[  ] = {
   /* modifier                     key                       function                argument */
   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("rofi-menu") },
@@ -177,6 +206,12 @@ static const Key keys[  ] = {
 	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ControlMask,           XK_g,                     setscratch,             { .v = scratchpadcmd } },
+
+	/* scratchpad dock — act on the active group */
+	{ MODKEY,                       XK_apostrophe,            scratchdocknew,         { 0 } },        /* spawn empty dock; focus stays on main */
+	{ MODKEY|ShiftMask,             XK_apostrophe,            scratchdockadopt,       { 0 } },        /* adopt selected window as dock */
+	{ MODKEY,                       XK_semicolon,             scratchdockcycle,       { .i = +1 } },  /* cycle focus among scratchpad windows */
+	{ MODKEY|ShiftMask,             XK_semicolon,             scratchdockcycle,       { .i = -1 } },
 
   { MODKEY,                       XK_v,                     togglescratch,          { .v = spdotfiles } },
   { MODKEY,                       XK_e,                     togglescratch,          { .v = spdwmconf } },

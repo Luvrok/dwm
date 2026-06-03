@@ -41,6 +41,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
 * [alttagsdecoration (dwm-alttagsdecoration-2020010304-cb3f58a.diff)](https://dwm.suckless.org/patches/alttagsdecoration/)
 * [windowmap (dwm-windowmap-20221026.diff)](https://dwm.suckless.org/patches/windowmap/)
 * [preserveonrestart (dwm-preserveonrestart-6.3.diff)](https://dwm.suckless.org/patches/preserveonrestart/)
+* scratchpaddock (dwm-scratchpaddock-6.6.diff)
 
 ## also check:
 ### prioritize focus under the mouse

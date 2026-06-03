@@ -1,0 +1,715 @@
+diff --git a/README.md b/README.md
+index 474d3cf..45a363a 100644
+--- a/README.md
++++ b/README.md
+@@ -41,6 +41,7 @@ modified for NixOS, see [self-restart (NixOS)](#self-restart-nixos)
+ * [alttagsdecoration (dwm-alttagsdecoration-2020010304-cb3f58a.diff)](https://dwm.suckless.org/patches/alttagsdecoration/)
+ * [windowmap (dwm-windowmap-20221026.diff)](https://dwm.suckless.org/patches/windowmap/)
+ * [preserveonrestart (dwm-preserveonrestart-6.3.diff)](https://dwm.suckless.org/patches/preserveonrestart/)
++* scratchpaddock (dwm-scratchpaddock-6.6.diff)
+ 
+ ## also check:
+ ### prioritize focus under the mouse
+diff --git a/config.h b/config.h
+index 2800e8e..63671c1 100644
+--- a/config.h
++++ b/config.h
+@@ -61,9 +61,10 @@ static const Rule rules[] = {
+   { "Zathura",         NULL,     NULL,      NULL,   0,          1,           0,           "-12X 10Y 720W 1020H", -1, -1,      0 },
+   { "nixos_menu_log",  NULL,     NULL,      NULL,   0,          1,           0,           NULL,      -1,       0,             0 },
+   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
+-  { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 720H",-1,     -1,            's' },
+-  { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 720H",-1,     -1,            'd' },
+-  { "spdwmconf",       NULL,     "spdwmconf",  "dwmconfig", 0,  1,           1,           "1280W 720H",-1,     -1,            'w' },
++  { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 910H",-1,     -1,            's' },
++  { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 910H",-1,     -1,            'd' },
++  { "spdwmconf",       NULL,     "spdwmconf",  "dwmconfig", 0,  1,           1,           "1280W 910H",-1,     -1,            'w' },
++  { "spdock",          NULL,     "spdock",  "spdock", 0,        1,           1,           "1280W 910H",-1,     -1,            0 },
+   { "ffplay",          NULL,     NULL,      "android-webcam", 0,1,           0,           NULL,      -1,       -1,            0 },
+   { "mpv",             NULL,     NULL,      NULL,   0,          0,           0,           NULL,      -1,       0,             0 }
+ };
+@@ -157,6 +158,34 @@ static const char *spdwmconf[] = {
+   NULL
+ };
+ 
++/* ---- scratchpad dock ------------------------------------------------------
++   Each scratchkey ('s','d','w',...) is a group: 1 main + 1 dock to its right. */
++#define SCRATCHDOCKKEY 's'                   /* default group */
++static const int scratchdock_mainw = 1280;   /* main width  */
++static const int scratchdock_mainh = 910;    /* main height */
++static const int scratchdock_dockw = 480;    /* dock width */
++static const int scratchdock_gap   = 10;     /* main<->dock gap */
++static const int scratchdock_single = 1;     /* 1: one dock per group */
++static const int scratchdock_exclusive = 1;  /* 1: only one group visible */
++static const char *scratchdockclass = "spdock";      /* class of Mod+' windows */
++static const char scratchdockadoptclass[] = "kitty"; /* default adoptable class */
++static const char *scratchdocknewcmd[] = {
++  "kitty",
++  "--class", "spdock",
++  "--name", "spdock",
++  "--title", "spdock",
++  NULL
++};
++
++/* Which WM_CLASS each group accepts (main and dock). A group not listed here
++   defaults to scratchdockadoptclass ("kitty"). Use NULL to allow ANY class. */
++static const ScratchAllow scratchallow[] = {
++  /* key   allowclass (NULL = any) */
++  { 's',   "kitty" },
++  { 'd',   "kitty" },
++  { 'w',   NULL },
++};
++
+ static const Key keys[  ] = {
+   /* modifier                     key                       function                argument */
+   { MODKEY,                       XK_p,                     spawn_with_lang_switch, SHCMD("rofi-menu") },
+@@ -178,6 +207,12 @@ static const Key keys[  ] = {
+ 	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
+ 	{ MODKEY|ControlMask,           XK_g,                     setscratch,             { .v = scratchpadcmd } },
+ 
++	/* scratchpad dock — act on the active group */
++	{ MODKEY,                       XK_apostrophe,            scratchdocknew,         { 0 } },        /* spawn empty dock; focus stays on main */
++	{ MODKEY|ShiftMask,             XK_apostrophe,            scratchdockadopt,       { 0 } },        /* adopt selected window as dock */
++	{ MODKEY,                       XK_semicolon,             scratchdockcycle,       { .i = +1 } },  /* cycle focus among scratchpad windows */
++	{ MODKEY|ShiftMask,             XK_semicolon,             scratchdockcycle,       { .i = -1 } },
++
+   { MODKEY,                       XK_v,                     togglescratch,          { .v = spdotfiles } },
+   { MODKEY,                       XK_e,                     togglescratch,          { .v = spdwmconf } },
+ 
+diff --git a/dwm.c b/dwm.c
+index 28b9bda..1b639cb 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -122,6 +122,15 @@ struct Client {
+ 	int ishidden;
+ 	char scratchkey;
+ 
++	int isdocked;          /* member of a scratchpad dock group */
++	int wasscratch;        /* once a scratchpad: stays re-addable */
++	char lastscratchkey;   /* former group key, for re-add */
++	int  lastdocked;       /* former role, for re-add */
++	int origfloating;      /* floating state to restore on release */
++	char origclass[64];    /* WM_CLASS saved before forcing spdock */
++	char originstance[64];
++	int classoverridden;   /* 1 if WM_CLASS was replaced with spdock */
++
+ 	Client *swallower;
+ 	Client *swallowed;
+ 	Client *next_swallowed;
+@@ -191,6 +200,12 @@ typedef struct {
+ 	const char scratchkey;
+ } Rule;
+ 
++/* per-group class allowlist (see scratchallow[] in config.h) */
++typedef struct {
++	char key;
++	const char *allowclass; /* NULL = any class */
++} ScratchAllow;
++
+ typedef struct SwallowDef {
+ 	pid_t pid;
+ 	Client *swallower;
+@@ -260,6 +275,20 @@ static void pushstack(const Arg *arg); /* patch stacker */
+ static void quit(const Arg *arg);
+ static Monitor *recttomon(int x, int y, int w, int h);
+ static void removescratch(const Arg *arg);
++static void arrangescratchdock(Monitor *m, char key);
++static int isscratchclass(Client *c, const char *cls);
++static const char *scratchallowclass(char key);
++static int clientallowed(Client *c, char key);
++static void setdockclass(Client *c, int on);
++static void placescratchmain(Client *c);
++static void killscratchclient(Client *c);
++static Client *scratchmain(Monitor *m, char key);
++static Client *scratchdockc(Monitor *m, char key);
++static void hideotherscratch(Monitor *m, char keepkey);
++static void showscratchgroup(Monitor *m, char key);
++static void scratchdocknew(const Arg *arg);
++static void scratchdockadopt(const Arg *arg);
++static void scratchdockcycle(const Arg *arg);
+ static void resize(Client *c, int x, int y, int w, int h, int interact);
+ static void resizeclient(Client *c, int x, int y, int w, int h);
+ static void resizemouse(const Arg *arg);
+@@ -378,6 +407,9 @@ static Drw *drw;
+ static Monitor *mons, *selmon;
+ static Window root, wmcheckwin;
+ 
++static char activescratchkey = 0; /* scratchkey of the last focused scratchpad */
++static char pendingdockkey = 0;   /* group a freshly-spawned dock should join */
++
+ /* configuration, allows nested code to access above variables */
+ #include "config.h"
+ 
+@@ -440,6 +472,15 @@ applyrules(Client *c)
+ 				setfloatpos(c, r->floatpos);
+ 		}
+ 	}
++	/* dock spawned by scratchdocknew(): join pendingdockkey's group as a dock */
++	if (strstr(class, scratchdockclass)) {
++		c->isfloating = 1;
++		c->scratchkey = pendingdockkey ? pendingdockkey : SCRATCHDOCKKEY;
++		pendingdockkey = 0;
++		c->isdocked = 1;
++		setscratchprop(c, 1);
++	}
++
+ 	if (ch.res_class)
+ 		XFree(ch.res_class);
+ 	if (ch.res_name)
+@@ -1196,6 +1237,8 @@ focus(Client *c)
+ 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
+ 	}
+ 	selmon->sel = c;
++	if (c && c->scratchkey)
++		activescratchkey = c->scratchkey; /* track active scratchpad group */
+ 	drawbars();
+ }
+ 
+@@ -1664,7 +1707,7 @@ loadxrdb()
+ void
+ manage(Window w, XWindowAttributes *wa)
+ {
+-	Client *c, *t = NULL;
++	Client *c, *t = NULL, *prevsel = NULL;
+ 	Window trans = None;
+ 	XWindowChanges wc;
+ 
+@@ -1750,11 +1793,18 @@ manage(Window w, XWindowAttributes *wa)
+ 
+ 	if (c->mon == selmon)
+ 		unfocus(selmon->sel, 0);
++	prevsel = c->mon->sel;
+ 	c->mon->sel = c;
+ 	arrange(c->mon);
++	if (c->isdocked)
++		arrangescratchdock(c->mon, c->scratchkey);
+ 	if (ISVISIBLE(c) && !HIDDEN(c))
+     XMapWindow(dpy, c->win);
+-	focus(NULL);
++	/* a dock opens in the background: keep focus on the main, don't steal it */
++	if (c->isdocked && prevsel && prevsel != c && ISVISIBLE(prevsel))
++		focus(prevsel);
++	else
++		focus(NULL);
+ }
+ 
+ void
+@@ -1935,6 +1985,7 @@ setscratchprop(Client *c, int on)
+ 	Atom prop = XInternAtom(dpy, "_DWM_SCRATCHPAD", False);
+ 	if (on) {
+ 		long v = 1;
++		c->wasscratch = 1; /* stays set after release, so it can be re-added */
+ 		XChangeProperty(dpy, c->win, prop, XA_CARDINAL, 32,
+ 		                PropModeReplace, (unsigned char *)&v, 1);
+ 	} else {
+@@ -1942,7 +1993,52 @@ setscratchprop(Client *c, int on)
+ 	}
+ }
+ 
+-/* Flag awesomebar-hidden windows so the compositor can animate them separately from tag-switch map/unmap. */
++/* on: save WM_CLASS, force it to spdock (so picom applies its rules).
++   off: restore it; a born-spdock window falls back to the adopt class. */
++void
++setdockclass(Client *c, int on)
++{
++	XClassHint ch = { NULL, NULL };
++
++	if (!c)
++		return;
++	if (on) {
++		if (c->classoverridden || isscratchclass(c, scratchdockclass))
++			return;
++		if (XGetClassHint(dpy, c->win, &ch)) {
++			strncpy(c->originstance, ch.res_name  ? ch.res_name  : "", sizeof c->originstance - 1);
++			strncpy(c->origclass,    ch.res_class ? ch.res_class : "", sizeof c->origclass - 1);
++			if (ch.res_name)  XFree(ch.res_name);
++			if (ch.res_class) XFree(ch.res_class);
++			c->classoverridden = 1;
++		}
++		ch.res_name = ch.res_class = (char *)scratchdockclass;
++		XSetClassHint(dpy, c->win, &ch);
++	} else {
++		if (c->classoverridden) {
++			ch.res_name  = c->originstance;
++			ch.res_class = c->origclass;
++			XSetClassHint(dpy, c->win, &ch);
++			c->classoverridden = 0;
++		} else if (isscratchclass(c, scratchdockclass)) {
++			ch.res_name = ch.res_class = (char *)scratchdockadoptclass;
++			XSetClassHint(dpy, c->win, &ch);
++		}
++	}
++}
++
++/* size & center a freshly-promoted main */
++void
++placescratchmain(Client *c)
++{
++	int bw = c->bw;
++	int mw = scratchdock_mainw, mh = scratchdock_mainh;
++	int mx = c->mon->wx + (c->mon->ww - (mw + 2 * bw)) / 2;
++	int my = c->mon->wy + (c->mon->wh - (mh + 2 * bw)) / 2;
++
++	c->ignoresizehints = 1;
++	resize(c, mx, my, mw, mh, 0);
++}
+ void
+ sethiddenprop(Client *c, int on)
+ {
+@@ -2046,11 +2142,42 @@ recttomon(int x, int y, int w, int h)
+ void
+ removescratch(const Arg *arg)
+ {
+-	Client *c = selmon->sel;
+-	if (!c)
++	Client *c = selmon->sel, *dc;
++	Monitor *m;
++	char key;
++	int wasmain;
++
++	if (!c || c->scratchkey == 0)
+ 		return;
++
++	m = c->mon;
++	key = c->scratchkey;
++	wasmain = !c->isdocked;
++
++	/* remember group/role so setscratch can re-add the same window */
++	c->lastscratchkey = key;
++	c->lastdocked = c->isdocked;
++
++	/* release: drop scratch state, land on the current tag as a normal window */
++	c->isdocked = 0;
+ 	c->scratchkey = 0;
+-	setscratchprop(selmon->sel, 1);
++	c->isfloating = c->origfloating;
++	c->origfloating = 0;
++	c->tags = m->tagset[m->seltags];
++	c->ignoresizehints = 0;
++	setdockclass(c, 0);          /* restore original WM_CLASS */
++	setscratchprop(c, 0);
++	setclienttagprop(c);
++	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
++
++	/* a main can't leave a dock orphaned: close (not hide) the dock too */
++	if (wasmain && (dc = scratchdockc(m, key)))
++		killscratchclient(dc);
++
++	focus(NULL);
++	arrange(m);
++	if (!wasmain)                /* a main remains: re-center the group */
++		arrangescratchdock(m, key);
+ }
+ 
+ void
+@@ -2548,12 +2675,58 @@ setmfact(const Arg *arg)
+ void
+ setscratch(const Arg *arg)
+ {
+-	Client *c = selmon->sel;
+-	if (!c)
++	Client *c = selmon->sel, *mc, *dc;
++	char key;
++	int wantdock;
++
++	if (!c || c->scratchkey != 0)
+ 		return;
+ 
+-	c->scratchkey = ((char**)arg->v)[0][0];
+-	setscratchprop(selmon->sel, 1);
++	/* target group: released window -> its own group; else active group with a
++	   main; else default 's'. Works even with no scratchpad windows open. */
++	if (c->wasscratch && c->lastscratchkey)
++		key = c->lastscratchkey;
++	else if (activescratchkey && scratchmain(selmon, activescratchkey))
++		key = activescratchkey;
++	else
++		key = ((char**)arg->v)[0][0];   /* scratchpadcmd[0][0] == 's' */
++	mc = scratchmain(selmon, key);
++	dc = scratchdockc(selmon, key);
++
++	/* role: former role if known, else main for an empty group. wanted slot
++	   taken -> take the free one; bail only if both are full */
++	wantdock = (c->wasscratch && c->lastscratchkey == key) ? c->lastdocked : (mc ? 1 : 0);
++	if (wantdock && scratchdock_single && dc) {
++		if (mc) return;
++		wantdock = 0;
++	} else if (!wantdock && mc) {
++		if (scratchdock_single && dc) return;
++		wantdock = 1;
++	}
++
++	/* enforce the group's allowed class (former scratchpads are exempt) */
++	if (!c->wasscratch && !clientallowed(c, key))
++		return;
++
++	c->origfloating = c->isfloating;
++	c->isfloating = 1;
++	c->isdocked = wantdock;
++	c->scratchkey = key;
++	c->lastscratchkey = 0;
++	c->tags = selmon->tagset[selmon->seltags];
++	setscratchprop(c, 1);
++	if (wantdock)
++		setdockclass(c, 1);          /* dock gets the spdock class */
++	setclienttagprop(c);
++
++	hideotherscratch(selmon, key);
++	showscratchgroup(selmon, key);
++	if (!wantdock)
++		placescratchmain(c);         /* new main: size & center it */
++	arrange(selmon);
++	arrangescratchdock(selmon, key);
++	focus(c);
++	XRaiseWindow(dpy, c->win);
+ }
+ 
+ void
+@@ -2923,6 +3096,284 @@ togglesticky(const Arg *arg)
+ 	arrange(selmon);
+ }
+ 
++/* ---- scratchpad dock ------------------------------------------------------
++ * A group (scratchkey) holds one main (isdocked==0) + dock window(s)
++ * (isdocked==1) to its right, centered on the work area. Picom animates moves.
++ */
++
++void
++arrangescratchdock(Monitor *m, char key)
++{
++	Client *c, *mainc = NULL, *dock[64];
++	int n = 0, i, bw, gap, mw, mh, dw, my, totalw, gx, dx, cellh;
++
++	if (!m || !key)
++		return;
++
++	/* gather group members on the current tag */
++	for (c = m->clients; c; c = c->next) {
++		if (c->scratchkey != key || HIDDEN(c) || !(c->tags & m->tagset[m->seltags]))
++			continue;
++		if (c->isdocked) {
++			if (n < (int)LENGTH(dock))
++				dock[n++] = c;
++		} else if (!mainc)
++			mainc = c;
++	}
++
++	bw  = mainc ? mainc->bw : (int)borderpx;
++	gap = scratchdock_gap;
++	dw  = scratchdock_dockw;
++
++	/* never resize the main (picom would scale it and desync the right/bottom
++	   border -> flicker); keep its size & y, slide only on x */
++	if (mainc) {
++		mw = mainc->w;
++		mh = mainc->h;
++		my = mainc->y;
++	} else { /* no main: use configured size, center vertically */
++		mw = scratchdock_mainw;
++		mh = scratchdock_mainh;
++		my = m->wy + (m->wh - (mh + 2 * bw)) / 2;
++	}
++
++	/* horizontal footprint, centered */
++	totalw = mw + 2 * bw;
++	if (n > 0)
++		totalw += gap + dw + 2 * bw;
++	gx = m->wx + (m->ww - totalw) / 2;
++
++	if (mainc) {
++		mainc->ignoresizehints = 1;
++		resize(mainc, gx, my, mw, mh, 0); /* x-only move -> picom slides it */
++		XRaiseWindow(dpy, mainc->win);
++	}
++
++	if (n == 0)
++		return;
++
++	dx = gx + mw + 2 * bw + gap;
++	if (!mainc) /* no main: center the dock column alone */
++		dx = m->wx + (m->ww - (dw + 2 * bw)) / 2;
++
++	/* docks match the main's height; stacked docks split it evenly */
++	cellh = (mh - (n - 1) * gap - n * 2 * bw) / n;
++	if (cellh < 1)
++		cellh = 1;
++
++	for (i = 0; i < n; i++) {
++		int cy = my + i * (cellh + 2 * bw + gap);
++		dock[i]->ignoresizehints = 1;
++		resize(dock[i], dx, cy, dw, cellh, 0);
++		XRaiseWindow(dpy, dock[i]->win);
++	}
++}
++
++int
++isscratchclass(Client *c, const char *cls)
++{
++	XClassHint ch = { NULL, NULL };
++	int match = 0;
++
++	if (c && cls && XGetClassHint(dpy, c->win, &ch)) {
++		if (ch.res_class && !strcmp(ch.res_class, cls))
++			match = 1;
++		if (ch.res_class)
++			XFree(ch.res_class);
++		if (ch.res_name)
++			XFree(ch.res_name);
++	}
++	return match;
++}
++
++/* allowed WM_CLASS for a group (unlisted -> default adopt class) */
++static const char *
++scratchallowclass(char key)
++{
++	unsigned int i;
++	for (i = 0; i < LENGTH(scratchallow); i++)
++		if (scratchallow[i].key == key)
++			return scratchallow[i].allowclass;
++	return scratchdockadoptclass;
++}
++
++/* may c join group `key`? NULL allowclass means any class */
++static int
++clientallowed(Client *c, char key)
++{
++	const char *cls = scratchallowclass(key);
++	return !cls || isscratchclass(c, cls);
++}
++
++/* close a client (tears down a group's dock with its main) */
++void
++killscratchclient(Client *c)
++{
++	if (!c)
++		return;
++	if (!sendevent(c, wmatom[WMDelete])) {
++		XGrabServer(dpy);
++		XSetErrorHandler(xerrordummy);
++		XSetCloseDownMode(dpy, DestroyAll);
++		XKillClient(dpy, c->win);
++		XSync(dpy, False);
++		XSetErrorHandler(xerror);
++		XUngrabServer(dpy);
++	}
++}
++
++/* group lookups */
++static Client *
++scratchmain(Monitor *m, char key)
++{
++	Client *c;
++	for (c = m->clients; c; c = c->next)
++		if (c->scratchkey == key && !c->isdocked)
++			return c;
++	return NULL;
++}
++
++static Client *
++scratchdockc(Monitor *m, char key)
++{
++	Client *c;
++	for (c = m->clients; c; c = c->next)
++		if (c->scratchkey == key && c->isdocked)
++			return c;
++	return NULL;
++}
++
++/* exclusive mode: hide (tags=0, not close) every visible group except keepkey */
++static void
++hideotherscratch(Monitor *m, char keepkey)
++{
++	Client *c;
++
++	if (!scratchdock_exclusive)
++		return;
++	for (c = m->clients; c; c = c->next)
++		if (c->scratchkey && c->scratchkey != keepkey
++		    && (c->tags & m->tagset[m->seltags])) {
++			c->tags = 0;
++			setclienttagprop(c);
++		}
++}
++
++/* reveal every member of group `key` on the current tag */
++static void
++showscratchgroup(Monitor *m, char key)
++{
++	Client *c;
++	for (c = m->clients; c; c = c->next)
++		if (c->scratchkey == key) {
++			c->tags = m->tagset[m->seltags];
++			setclienttagprop(c);
++		}
++}
++
++/* spawn a dock kitty for the active group (fallback 's').
++   no main -> do nothing: a dock requires an existing main. focus stays on it. */
++void
++scratchdocknew(const Arg *arg)
++{
++	char key = (activescratchkey && scratchmain(selmon, activescratchkey))
++	           ? activescratchkey : SCRATCHDOCKKEY;
++	Client *mc = scratchmain(selmon, key);
++
++	if (!mc)
++		return;                          /* no main: dock not allowed */
++	if (scratchdock_single && scratchdockc(selmon, key))
++		return;                          /* group already full */
++
++	hideotherscratch(selmon, key);
++	showscratchgroup(selmon, key);
++	focus(mc);
++	arrange(selmon);
++	arrangescratchdock(selmon, key);
++	pendingdockkey = key;
++	spawn(&(Arg){ .v = scratchdocknewcmd });
++}
++
++/* adopt the selected window into the active group (fallback 's').
++   allowed class only. empty group -> main; else dock. an already-scratch
++   selection just reveals + re-centers its group. */
++void
++scratchdockadopt(const Arg *arg)
++{
++	Client *c = selmon->sel, *mc;
++	char key;
++
++	if (!c)
++		return;
++
++	if (c->scratchkey != 0) {
++		hideotherscratch(c->mon, c->scratchkey);
++		showscratchgroup(c->mon, c->scratchkey);
++		arrange(c->mon);
++		arrangescratchdock(c->mon, c->scratchkey);
++		focus(c);
++		XRaiseWindow(dpy, c->win);
++		return;
++	}
++
++	key = (activescratchkey && scratchmain(selmon, activescratchkey))
++	      ? activescratchkey : SCRATCHDOCKKEY;
++	if (!c->wasscratch && !clientallowed(c, key))
++		return;                          /* class not allowed for this group */
++	mc = scratchmain(selmon, key);
++	if (mc && scratchdock_single && scratchdockc(selmon, key))
++		return;                          /* group already full */
++
++	c->origfloating = c->isfloating;
++	c->isfloating = 1;
++	c->isdocked = mc ? 1 : 0;            /* empty group -> become the main */
++	c->scratchkey = key;
++	c->tags = selmon->tagset[selmon->seltags];
++	setscratchprop(c, 1);
++	if (c->isdocked)
++		setdockclass(c, 1);              /* dock gets the spdock class */
++	setclienttagprop(c);
++
++	hideotherscratch(selmon, key);
++	showscratchgroup(selmon, key);
++	if (!c->isdocked)
++		placescratchmain(c);             /* new main: size & center it */
++	arrange(selmon);
++	arrangescratchdock(selmon, key);
++	focus(c);
++	XRaiseWindow(dpy, c->win);
++}
++
++/* cycle focus among scratchpad windows only (any group); arg->i: +1/-1 */
++void
++scratchdockcycle(const Arg *arg)
++{
++	Client *c, *members[64];
++	int n = 0, cur = -1, i, dir;
++
++	for (c = selmon->clients; c; c = c->next) {
++		if (c->scratchkey == 0 || !ISVISIBLE(c) || HIDDEN(c))
++			continue;
++		if (n < (int)LENGTH(members)) {
++			if (c == selmon->sel)
++				cur = n;
++			members[n++] = c;
++		}
++	}
++	if (n == 0)
++		return;
++
++	dir = arg->i < 0 ? -1 : 1;
++	if (cur < 0)
++		i = dir > 0 ? 0 : n - 1; /* nothing focused yet: jump in */
++	else
++		i = MOD(cur + dir, n);
++
++	focus(members[i]);
++	restack(selmon);
++	XRaiseWindow(dpy, members[i]->win);
++}
++
+ void
+ togglescratch(const Arg *arg)
+ {
+@@ -2947,6 +3398,10 @@ togglescratch(const Arg *arg)
+ 			++numscratchpads;
+ 		}
+ 
++	/* exclusive mode: showing this group hides any other on-screen group */
++	if (numscratchpads == 0 || scratchvisible != numscratchpads)
++		hideotherscratch(selmon, ((char**)arg->v)[0][0]);
++
+ 	/* Now for the real deal. The logic should go like:
+ 	    - hidden scratchpads will be shown
+ 	    - shown scratchpads will be hidden, unless they are being moved to the current monitor
+@@ -3037,6 +3492,8 @@ togglescratch(const Arg *arg)
+ 		arrange(NULL);
+ 		if (found->isfloating)
+ 			XRaiseWindow(dpy, found->win);
++		if (scratchdockc(found->mon, found->scratchkey))
++			arrangescratchdock(found->mon, found->scratchkey); /* re-place its dock */
+ 	} else {
+ 		spawn(&(Arg){ .v = (const void *)(((char * const *)arg->v) + 1) });
+ 	}
+@@ -3161,6 +3618,21 @@ unmanage(Client *c, int destroyed)
+ {
+ 	Monitor *m = c->mon;
+ 	XWindowChanges wc;
++	char sk = c->scratchkey;
++	int wasdocked = c->isdocked;
++	int wasmain = (sk != 0 && !wasdocked); /* a scratchpad main */
++	Client *t, *dockc = NULL, *mainc = NULL;
++
++	/* find this group's main / dock sibling while c is still in the list */
++	if (sk != 0)
++		for (t = m->clients; t; t = t->next) {
++			if (t == c || t->scratchkey != sk)
++				continue;
++			if (t->isdocked)
++				dockc = t;
++			else
++				mainc = t;
++		}
+ 
+ 	if(c->swallower) {
+ 		Client **prev = &c->swallower->swallowed;
+@@ -3200,6 +3672,20 @@ unmanage(Client *c, int destroyed)
+ 		lastfocused = NULL;
+ 	free(c);
+ 	arrange(m);
++	/* closing a main closes its dock too. Do it BEFORE relayout so the dying
++	   dock isn't resized (which caused a height jump on close). */
++	if (wasmain && dockc) {
++		killscratchclient(dockc);
++		return; /* dock's own unmanage finishes focus/clientlist */
++	}
++	if (sk != 0)
++		arrangescratchdock(m, sk);
++	/* closing a dock returns focus to its main */
++	if (wasdocked && mainc && ISVISIBLE(mainc)) {
++		focus(mainc);
++		updateclientlist();
++		return;
++	}
+ 	if(c->swallower) focus(c->swallower);
+ 	else focus(getclientundermouse());
+ 	updateclientlist();
