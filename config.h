@@ -196,6 +196,7 @@ static const Key keys[  ] = {
   { MODKEY|ShiftMask,             XK_d,                     spawn,                  SHCMD("rofi-audio") },
   { MODKEY|ShiftMask,             XK_p,                     floatpos,               { .v = "-10X -10Y" } },
   { MODKEY|ShiftMask,             XK_y,                     spawn,                  SHCMD("rofi-translate") },
+  { MODKEY,                       XK_o,                     spawn,                  SHCMD("kitty --class movies -e yazi /media/outer-1") },
 
 	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
