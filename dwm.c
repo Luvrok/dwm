@@ -331,6 +331,7 @@ static void sigstatusbar(const Arg *arg);
 static void spawn(const Arg *arg);
 static int stackpos(const Arg *arg); /* patch stacker */
 static void tag(const Arg *arg);
+static void tagswitch(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
@@ -2994,6 +2995,20 @@ tag(const Arg *arg)
 		arrange(selmon);
 		focus(getclientundermouse());
 	}
+}
+
+/* move sel window to a tag and follow it there, keeping it focused */
+void
+tagswitch(const Arg *arg)
+{
+	Client *c = selmon->sel;
+	if (!c || !(arg->ui & TAGMASK))
+		return;
+	c->tags = arg->ui & TAGMASK;
+	setclienttagprop(c);
+	view(arg);        /* switch view onto the tag (no-op if already there) */
+	focus(c);
+	arrange(selmon);
 }
 
 void
