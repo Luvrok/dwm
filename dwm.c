@@ -1707,9 +1707,10 @@ loadxrdb()
 void
 manage(Window w, XWindowAttributes *wa)
 {
-	Client *c, *t = NULL, *prevsel = NULL;
+	Client *c, *t = NULL;
 	Window trans = None;
 	XWindowChanges wc;
+	XEvent ev;
 
 	c = ecalloc(1, sizeof(Client));
 	c->win = w;
@@ -1793,17 +1794,20 @@ manage(Window w, XWindowAttributes *wa)
 
 	if (c->mon == selmon)
 		unfocus(selmon->sel, 0);
-	prevsel = c->mon->sel;
 	c->mon->sel = c;
 	arrange(c->mon);
 	if (c->isdocked)
 		arrangescratchdock(c->mon, c->scratchkey);
 	if (ISVISIBLE(c) && !HIDDEN(c))
     XMapWindow(dpy, c->win);
-	/* a dock opens in the background: keep focus on the main, don't steal it */
-	if (c->isdocked && prevsel && prevsel != c && ISVISIBLE(prevsel))
-		focus(prevsel);
-	else
+	/* dock takes focus when it opens. Sliding the main to make room queues an
+	   EnterNotify on it; drop it (as restack does) or focus-follows-mouse
+	   would revert focus to the main under the pointer. */
+	if (c->isdocked && ISVISIBLE(c) && !HIDDEN(c)) {
+		focus(c);
+		XSync(dpy, False);
+		while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
+	} else
 		focus(NULL);
 }
 
