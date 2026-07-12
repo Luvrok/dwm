@@ -1938,6 +1938,9 @@ movecenter(const Arg *arg)
 
   if (c->isfullscreen)
     return;
+	if (c->scratchkey && scratchmain(c->mon, c->scratchkey)
+	                  && scratchdockc(c->mon, c->scratchkey))
+		return;
 
   if (!c->isfloating) {
       c->isfloating = 1;
