@@ -3405,6 +3405,7 @@ togglescratch(const Arg *arg)
 	int multimonscratch = 0; // whether we have scratchpads that are placed on multiple monitors
 	int scratchmon = -1; // the monitor where the scratchpads exist
 	int numscratchpads = 0; // count of scratchpads
+	int willhide = 0;
 
 	/* Looping through monitors and client's twice, the first time to work out whether we need
 	   to move clients across from one monitor to another or not */
@@ -3421,7 +3422,9 @@ togglescratch(const Arg *arg)
 		}
 
 	/* exclusive mode: showing this group hides any other on-screen group */
-	if (numscratchpads == 0 || scratchvisible != numscratchpads)
+	willhide = (numscratchpads > 0 && scratchvisible == numscratchpads
+	            && (multimonscratch || scratchmon == selmon->num));
+	if (!willhide)
 		hideotherscratch(selmon, ((char**)arg->v)[0][0]);
 
 	/* Now for the real deal. The logic should go like:
