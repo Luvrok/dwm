@@ -333,6 +333,7 @@ static int stackpos(const Arg *arg); /* patch stacker */
 static void tag(const Arg *arg);
 static void tagswitch(const Arg *arg);
 static void tagmon(const Arg *arg);
+static void tagmonstay(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
@@ -3039,6 +3040,31 @@ tagmon(const Arg *arg)
 	}
 
 	XWarpPointer(dpy, None, m->barwin, 0, 0, 0, 0, m->mw / 2, m->mh / 2);
+}
+
+/* send sel to another monitor without following focus (dump it there) */
+void
+tagmonstay(const Arg *arg)
+{
+	Client *c = selmon->sel;
+	Monitor *origin = selmon, *m;
+	if (!c || !mons->next)
+		return;
+	m = dirtomon(arg->i);
+	if (c->isfullscreen) {
+		c->isfullscreen = 0;
+		sendmon(c, m, 1);
+		c->isfullscreen = 1;
+		resizeclient(c, m->mx, m->my, m->mw, m->mh);
+		XRaiseWindow(dpy, c->win);
+	} else
+		sendmon(c, m, 1);
+	/* sendmon followed focus to m; hand it back to the origin monitor */
+	if (selmon != origin) {
+		unfocus(selmon->sel, 0);
+		selmon = origin;
+		focus(NULL);
+	}
 }
 
 void
