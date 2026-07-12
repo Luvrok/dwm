@@ -2682,6 +2682,7 @@ setscratch(const Arg *arg)
 	Client *c = selmon->sel, *mc, *dc;
 	char key;
 	int wantdock;
+	XEvent ev;
 
 	if (!c || c->scratchkey != 0)
 		return;
@@ -2731,6 +2732,11 @@ setscratch(const Arg *arg)
 	arrangescratchdock(selmon, key);
 	focus(c);
 	XRaiseWindow(dpy, c->win);
+
+	/* drop the spurious EnterNotify from repositioning, or focus-follows-mouse
+	   would revert focus off the window we just added (dock or main) */
+	XSync(dpy, False);
+	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 }
 
 void
@@ -3282,20 +3288,32 @@ scratchdocknew(const Arg *arg)
 {
 	char key = (activescratchkey && scratchmain(selmon, activescratchkey))
 	           ? activescratchkey : SCRATCHDOCKKEY;
-	Client *mc = scratchmain(selmon, key);
+  Client *mc = scratchmain(selmon, key);
+	Client *dc = scratchdockc(selmon, key);
 
 	if (!mc)
 		return;                          /* no main: dock not allowed */
-	if (scratchdock_single && scratchdockc(selmon, key))
-		return;                          /* group already full */
 
+	/* toggle off: a visible dock closes. master stays; unmanage recenters it
+	   and returns focus to it. */
+	if (dc && !HIDDEN(dc) && (dc->tags & selmon->tagset[selmon->seltags])) {
+		killscratchclient(dc);
+		return;
+	}
+	if (pendingdockkey == key)
+		return;                          /* a dock for this group is mid-spawn */
+
+	/* otherwise bring the group up front (reveals a hidden dock too) */
 	hideotherscratch(selmon, key);
 	showscratchgroup(selmon, key);
 	focus(mc);
 	arrange(selmon);
 	arrangescratchdock(selmon, key);
-	pendingdockkey = key;
-	spawn(&(Arg){ .v = scratchdocknewcmd });
+
+	if (!dc) {                           /* no dock yet: spawn one */
+		pendingdockkey = key;
+		spawn(&(Arg){ .v = scratchdocknewcmd });
+	}
 }
 
 /* adopt the selected window into the active group (fallback 's').
