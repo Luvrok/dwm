@@ -188,6 +188,7 @@ static const Key keys[  ] = {
   { MODKEY,                       XK_space,                 spawn,                  { .v = lang_pkill } },
   { MODKEY,                       XK_w,                     spawn,                  SHCMD("rofi-powermenu") },
   { MODKEY|ControlMask,           XK_w,                     spawn,                  SHCMD("rofi-wifi") },
+  { MODKEY,                       XK_b,                     spawn,                  SHCMD("rofi-bluetooth") },
   { MODKEY|ShiftMask,             XK_w,                     spawn,                  SHCMD("webcam") },
   { MODKEY,                       XK_r,                     spawn,                  SHCMD("rofi-recording") },
   { MODKEY|ShiftMask,             XK_r,                     spawn,                  SHCMD("rofi-recording stop") },
