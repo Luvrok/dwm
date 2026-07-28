@@ -56,7 +56,7 @@ static const Rule rules[] = {
   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
   { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 910H",-1,     -1,            's' },
   { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 910H",-1,     -1,            'd' },
-  { "spdwmconf",       NULL,     "spdwmconf",  "dwmconfig", 0,  1,           1,           "1280W 910H",-1,     -1,            'w' },
+  { "rangerterm",       NULL,     "rangerterm",  "ranger", 0,  1,           1,           "1280W 910H",-1,     -1,            'w' },
   { "spdock",          NULL,     "spdock",  "spdock", 0,        1,           1,           "1280W 910H",-1,     -1,            0 },
   { "ffplay",          NULL,     NULL,      "android-webcam", 0,1,           0,           NULL,      -1,       -1,            0 },
 };
@@ -141,13 +141,13 @@ static const char *spdotfiles[] = {
 };
 
 /* scratchpad: dwm config.h */
-static const char *spdwmconf[] = {
+static const char *rangerterm[] = {
   "w",
   "kitty",
-  "--class", "spdwmconf",
-  "--name", "spdwmconf",
-  "--title", "dwmconfig",
-  "-e", "sh", "-c", "cd ~/HOME/infra/dwm && nvim",
+  "--class", "rangerterm",
+  "--name", "rangerterm",
+  "--title", "ranger",
+  "-e", "sh", "-c", "cd && yazi",
   NULL
 };
 
@@ -211,7 +211,7 @@ static const Key keys[  ] = {
 	{ MODKEY|ShiftMask,             XK_semicolon,             scratchdockcycle,       { .i = -1 } },
 
   { MODKEY,                       XK_v,                     togglescratch,          { .v = spdotfiles } },
-  { MODKEY,                       XK_e,                     togglescratch,          { .v = spdwmconf } },
+  { MODKEY,                       XK_e,                     togglescratch,          { .v = rangerterm } },
 
   /* XF86Keys */
   { 0,                            XF86XK_AudioMute,         spawn,                  { .v = mutevol}},
