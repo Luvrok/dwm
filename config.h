@@ -19,7 +19,6 @@ static const char *fonts[] = {
     "JetBrainsMonoNL NFP:size=10",
     "Font Awesome 6 Free Solid:size=8",
 };
-static const char dmenufont[]       = "JetBrainsMonoNL NFP:size=12";
 
 /* default colors used if xrdb is not loaded */
 static char normbgcolor[]           = "#000000";
@@ -56,9 +55,9 @@ static const Rule rules[] = {
   { "Dragon-drop",     NULL,     NULL,      NULL,   0,          1,           1,           NULL,      -1,       -1,            0 },
   { "spterm",          NULL,     "spterm",  "scratchpad", 0,    1,           1,           "1280W 910H",-1,     -1,            's' },
   { "spdotfiles",      NULL,     "spdotfiles", "dotfiles", 0,   1,           1,           "1280W 910H",-1,     -1,            'd' },
-  { "rangerterm",       NULL,     "rangerterm",  "ranger", 0,  1,           1,           "1280W 910H",-1,     -1,            'w' },
+  { "rangerterm",      NULL,     "rangerterm",  "ranger", 0,    1,           1,           "1280W 910H",-1,     -1,            'w' },
   { "spdock",          NULL,     "spdock",  "spdock", 0,        1,           1,           "1280W 910H",-1,     -1,            0 },
-  { "ffplay",          NULL,     NULL,      "android-webcam", 0,1,           0,           NULL,      -1,       -1,            0 },
+  { "ffplay",          NULL,     NULL,      "android-webcam", 0,1,           0,           NULL,      -1,       -1,            0 }
 };
 
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
@@ -93,16 +92,11 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-/* helper for launching gtk application */
-#define GTKCMD(cmd) { .v = (const char*[]){ "/usr/bin/gtk-launch", cmd, NULL } }
-
 #define STATUSBAR "dwmblocks"
 #define BROWSER  "librewolf"
 #define TERMINAL  "kitty"
 
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu", NULL };
-
+/* switch keyboard layout to US (and refresh the bar), then spawn arg */
 void spawn_with_lang_switch(const Arg *arg) {
     system("xkb-switch -s us && pkill -RTMIN+1 dwmblocks");  // change language to english
     spawn(arg);                  // start dmenu_run
@@ -140,7 +134,7 @@ static const char *spdotfiles[] = {
   NULL
 };
 
-/* scratchpad: dwm config.h */
+/* scratchpad: yazi in home */
 static const char *rangerterm[] = {
   "w",
   "kitty",

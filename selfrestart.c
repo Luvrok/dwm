@@ -1,12 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
-// simpler dwm restart on NixOS
-void self_restart(const Arg *arg) {
+/* exec the system dwm binary in place (state preserved via _NET_CLIENT_INFO) */
+void
+self_restart(const Arg *arg)
+{
     char *const dwm_argv[] = { "/run/current-system/sw/bin/dwm", NULL };
     execv(dwm_argv[0], dwm_argv);
 }
 
-void self_restart_test(const Arg *arg) {
+/* same, but exec the locally built ~/HOME/infra/dwm/dwm for testing */
+void
+self_restart_test(const Arg *arg)
+{
     const char *home = getenv("HOME");
     if (!home) return;
 
