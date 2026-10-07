@@ -104,7 +104,7 @@ void spawn_with_lang_switch(const Arg *arg) {
 
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *librewolfcmd[]  = { "rofi-librewolf", NULL };
-static const char *screenshotcmd[] = { "flameshot", "gui", NULL };
+static const char *screenshotcmd[] = { "flameshot", "gui", "--clipboard", "--accept-on-select", NULL };
 static const char *greenclipcmd[] = { "rofi-greenclip", NULL };
 static const char *lang_pkill[] = { "pkill", "-RTMIN+1", "dwmblocks", NULL};
 static const char *upbrt[] = {"dwm-brightness", "up", NULL};
@@ -193,6 +193,7 @@ static const Key keys[  ] = {
   { MODKEY|ShiftMask,             XK_p,                     floatpos,               { .v = "-10X -10Y" } },
   { MODKEY|ShiftMask,             XK_y,                     spawn,                  SHCMD("rofi-translate") },
   { MODKEY,                       XK_o,                     spawn,                  SHCMD("kitty --class movies -e yazi /media/outer-1") },
+  { MODKEY,                       XK_Print,                 spawn,                  SHCMD("ocr") },
 
 	{ MODKEY,                       XK_g,                     togglescratch,          { .v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_g,                     removescratch,          { .v = scratchpadcmd } },
